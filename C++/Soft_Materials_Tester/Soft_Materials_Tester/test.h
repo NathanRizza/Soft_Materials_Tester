@@ -1,6 +1,8 @@
 #pragma once
 #include<iostream>
 #include <string>
+#include "testStep.h"
+
 #ifndef TEST_H
 #define TEST_H
 
