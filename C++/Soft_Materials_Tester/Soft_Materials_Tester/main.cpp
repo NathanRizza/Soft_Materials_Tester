@@ -44,6 +44,7 @@ char* port = commport1;
 int main()
 {
 	SerialPort arduino(port);
+	Sleep(1000);
 	if (arduino.isConnected()) 
 	{
 		cout << "Connection made" << endl << endl;
@@ -66,9 +67,9 @@ int main()
 			Sleep(1000);
 			arduino.readSerialPort(output, MAX_DATA_LENGTH);
 
-			outputString = output;
+			//outputString = output;
 
-			cout << ">> " << outputString << endl;
+			//cout << ">> " << outputString << endl;
 			delete[] charArray;
 		}
 		return 0;
