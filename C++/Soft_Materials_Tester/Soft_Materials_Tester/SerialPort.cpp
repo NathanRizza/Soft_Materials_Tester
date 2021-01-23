@@ -46,12 +46,12 @@ SerialPort::SerialPort(char *portName)
     }
 }
 
-SerialPort::~SerialPort()
+SerialPort::~SerialPort() //This function likes to screw things up. 
 {
-    if (this->connected){
-        this->connected = false;
-        CloseHandle(this->handler);
-    }
+    //if (this->connected){
+    //    this->connected = false;
+    //    CloseHandle(this->handler);
+    //}
 }
 
 int SerialPort::readSerialPort(char *buffer, unsigned int buf_size)

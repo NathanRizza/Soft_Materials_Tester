@@ -31,21 +31,16 @@ using namespace std;
 #include<string>
 #include<stdlib.h>
 #include"SerialPort.h"
+#include"a2pc.h"
 
-char output[MAX_DATA_LENGTH];
-char incomingData[MAX_DATA_LENGTH];
-string outputString = "temp";
-
-// change the name of the port with the port name of your computer
-// must remember that the backslashes are essential so do not remove them
-char commport1[] = "\\\\.\\COM4";
-char* port = commport1;
+char commport1[] = "\\\\.\\COM4"; //Arduino1 drives the motors.
+char* port1 = commport1;
 
 int main()
 {
-	SerialPort arduino(port);
+	SerialPort arduino1(port1); 
 	Sleep(1000);
-	if (arduino.isConnected()) 
+	if (arduino1.isConnected()) 
 	{
 		cout << "Connection made" << endl << endl;
 	}
@@ -53,24 +48,13 @@ int main()
 	{
 		cout << "Error in port name" << endl << endl;
 	}
-		while (arduino.isConnected()) 
+		while (arduino1.isConnected()) 
 		{
 			cout << "Enter your command: " << endl;
 			string data;
 			cin >> data;
-
-			char* charArray = new char[data.size() + 1];
-			copy(data.begin(), data.end(), charArray);
-			charArray[data.size()] = '\n';
-
-			arduino.writeSerialPort(charArray, MAX_DATA_LENGTH);
-			Sleep(1000);
-			arduino.readSerialPort(output, MAX_DATA_LENGTH);
-
-			//outputString = output;
-
-			//cout << ">> " << outputString << endl;
-			delete[] charArray;
+			
+			serialWrite(arduino1,data);
 		}
 		return 0;
-	}
+}

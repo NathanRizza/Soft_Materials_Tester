@@ -21,9 +21,21 @@
     <ClCompile Include="SerialPort.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="a2pc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SerialPort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="testStep.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="a2pc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
