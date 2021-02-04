@@ -104,8 +104,8 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 
 		std::cout << std::endl;
 		std::cout << "Distance(Pulses): "<< disString << std::endl;
-		std::cout << "Velocity(Pulses): "<< velString << std::endl;
-		std::cout << "Acceleration(Pulses): "<< accString << std::endl;
+		std::cout << "Velocity(Pulses/sec): "<< velString << std::endl;
+		std::cout << "Acceleration(Pulses/sec^2): "<< accString << std::endl;
 
 
 		std::cout << std::endl;

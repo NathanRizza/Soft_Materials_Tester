@@ -33,9 +33,9 @@ Github shortened link (no spam and no ads): http://bit.ly/2vGkinQ
 //All personally written header Files
 
 
-char commport1[] = "\\\\.\\COM4"; //commport1 is the controlArduino which drives the motors.
+char commport1[] = "\\\\.\\COM3"; //commport1 is the controlArduino which drives the motors.
 char* port1 = commport1;
-char commport2[] = "\\\\.\\COM3"; //commport2 is the DataArduino which sends data to the PC.
+char commport2[] = "\\\\.\\COM4"; //commport2 is the DataArduino which sends data to the PC.
 char* port2 = commport2;
 
 int main()
@@ -55,6 +55,8 @@ int main()
 			std::cin >> data;
 			
 			serialWrite(controlArduino,data);
+			std::string output = serialRead(controlArduino);
+			std::cout << output;
 		}
 		return 0;
 }
