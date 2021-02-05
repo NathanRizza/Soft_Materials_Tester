@@ -1,32 +1,33 @@
-// ConstantSpeed.pde
-// -*- mode: C++ -*-
+//Nathan Rizza
+//Created: 12/10/2020
 //
-// Shows how to run AccelStepper in the simplest,
-// fixed speed mode with no accelerations
-/// \author  Mike McCauley (mikem@airspayce.com)
-// Copyright (C) 2009 Mike McCauley
-// $Id: ConstantSpeed.pde,v 1.1 2011/01/05 01:51:01 mikem Exp mikem $
+//
 
 #include <AccelStepper.h>
 
 //AccelStepper stepper; // Defaults to AccelStepper::FULL4WIRE (4 pins) on 2, 3, 4, 5
-AccelStepper stepper(1,12,11);
+AccelStepper stepper(1,12,11); //Red-12 Blue-11
 
+int maxSneed = 2500;
 void setup()
-{  
-   Serial.begin(9600); // COM27
-   stepper.setMaxSpeed(1000);
-   stepper.setSpeed(1000);
-   stepper.setAcceleration(10000.0);
-   pinMode(13, OUTPUT); //Connection Between Movement Arduino and Data Collection Arduino
+{ 
+   Serial.begin(9600);
+   stepper.setMaxSpeed(maxSneed);
+   //stepper.moveTo(800);
+   stepper.setSpeed(maxSneed);
+   //stepper.runSpeedToPosition();
+   //stepper.moveTo(0);
+   //stepper.setSpeed(2500);
+   //stepper.runSpeedToPosition();
+   
+   stepper.setAcceleration(10000);
    stepper.runToNewPosition(800);
    stepper.runToNewPosition(0);
-   Serial.println("ready");
+   pinMode(10, OUTPUT); //commuincation channel between control and data arduino.
 }
 
 void loop()
 { 
-  
     menu();
 }
 
@@ -34,10 +35,7 @@ void menu(void)
 {
   String testID = "p";
   testID = readData();
-  if(testID.equals("t"))
-  {
-    tensileSetup();
-  }
+  testMenu(testID);
   return;
 }  
 
@@ -45,16 +43,33 @@ void testMenu(String testID)
 {
   if(testID == "t")
   {
-  tensileSetup();
-  //Serial.println("Test Completed Sucsessfully");
+    tensileSetup();
+    //Serial.println("Test Completed Sucsessfully");
   }
-  if(testID == "")
+  else if(testID == "e")
   {
-    
+    while(true)
+    {
+    Serial.print("echo");
+    String data = readData();
+    Serial.print(100);
+    }
   }
-  if(testID == "")
+  else if(testID =="r")
   {
-  
+    int i=0;
+    stepper.moveTo(1600);//http://www.airspayce.com/mikem/arduino/AccelStepper/classAccelStepper.html#ace236ede35f87c63d18da25810ec9736
+    while(i <1600)
+    {
+      if(stepper.run())
+      {
+      i++;
+      }
+    }
+  }
+  else if(testID =="n")
+  {
+    stepper.runToNewPosition(10000);
   }
   return;
 }
@@ -82,12 +97,18 @@ void tensileSetup()
     velInt = velocity.toInt();
     accInt = acceleration.toInt();
 
-   // Serial.println("d");
-    
-    //Perform test and Indicate that Data Needs to be collected
+    Serial.println('b');
+    delay(500);
+    digitalWrite(10,HIGH);
     tesnsileTest(disInt,velInt,accInt);
-
-    //Serial.println("end");
+    digitalWrite(10,LOW);
+    delay(500);
+    Serial.println("d");
+    
+    delay(5000);
+    stepper.setSpeed(maxSneed);
+    stepper.setAcceleration(0);
+    stepper.runToNewPosition(0);
     
     return;
 }
@@ -102,14 +123,7 @@ void runStep(int distance, int velocity, int acceleration)
 
 void tesnsileTest(int disInt,int velInt,int accInt)
 {
-    runStep(disInt,velInt,accInt); //move up
-    delay(5000);
-
-    stepper.setSpeed(1000);
-    stepper.setAcceleration(0);
-    stepper.runToNewPosition(-disInt);
-
-    Serial.println("d");
+    runStep(disInt,velInt,accInt);
     return;  
 }
 

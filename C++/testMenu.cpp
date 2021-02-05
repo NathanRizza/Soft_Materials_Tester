@@ -72,6 +72,7 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 	std::string disString = "d";
 	std::string velString = "v";
 	std::string accString = "a";
+	std::string temp = "";
 	while (done)
 	{
 		std::cout << "Tensile Test Menu:" << std::endl;
@@ -149,6 +150,10 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 	serialWrite(controlArduino, velString);
 	serialWrite(controlArduino, accString);
 	std::cout << "Test Sent!" << std::endl;
+	Sleep(100);
+	temp = serialRead(controlArduino);
+	temp = serialRead(dataArduino);
+	getData(dataArduino);
 	
 	return;
 }

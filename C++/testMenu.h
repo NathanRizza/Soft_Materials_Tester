@@ -3,6 +3,7 @@
 
 #include "customTests.h"//uses test and testStep
 #include "a2pc.h" //Uses SerialPort
+#include "dataGathering.h"
 
 #ifndef TESTMENU_H
 #define TESTMENU_H

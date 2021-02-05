@@ -45,17 +45,21 @@ int main()
 	Sleep(1000);
 	if (isConnectedMenu(controlArduino)) 
 	{
+		if (dataArduino.isConnected())
+		{
+			std::cout << "true" << std::endl;
+		}
 		mainMenu(controlArduino,dataArduino);
 	}
 
-		while (controlArduino.isConnected()) 
+		while (dataArduino.isConnected()) 
 		{
 			std::cout << "Enter your command: " << std::endl;
 			std::string data;
 			std::cin >> data;
 			
-			serialWrite(controlArduino,data);
-			std::string output = serialRead(controlArduino);
+			serialWrite(dataArduino,data);
+			std::string output = serialRead(dataArduino);
 			std::cout << output;
 		}
 		return 0;

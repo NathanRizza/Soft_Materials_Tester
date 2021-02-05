@@ -3,9 +3,6 @@
 #ifndef A2PC_H
 #define A2PC_H
 
-//#include <windows.h>
-//#include <stdio.h>
-//#include <stdlib.h>
 #include "SerialPort.h"
 #include <string>
 #include <iostream>
