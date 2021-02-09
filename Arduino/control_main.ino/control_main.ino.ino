@@ -100,6 +100,7 @@ void tensileSetup()
     Serial.println('b');
     delay(500);
     digitalWrite(10,HIGH);
+    delay(1000);
     tesnsileTest(disInt,velInt,accInt);
     digitalWrite(10,LOW);
     delay(500);

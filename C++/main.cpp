@@ -45,10 +45,6 @@ int main()
 	Sleep(1000);
 	if (isConnectedMenu(controlArduino)) 
 	{
-		if (dataArduino.isConnected())
-		{
-			std::cout << "true" << std::endl;
-		}
 		mainMenu(controlArduino,dataArduino);
 	}
 
