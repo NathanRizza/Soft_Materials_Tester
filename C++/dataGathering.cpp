@@ -43,6 +43,5 @@ void writeDataToFile(float forceValues[],int j,std::string fileName)
 		}
 		outfile.close();
 		std::cout << "Data saved to file: " + fileName + ".csv " << std::endl;
-		system("pause");
 		return;
 }

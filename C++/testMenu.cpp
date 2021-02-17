@@ -25,7 +25,6 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 		else if (userInput == "1")
 		{
 			tensileTest(controlArduino, dataArduino);
-			system("pause");
 		}
 		else if (userInput == "2")
 		{
@@ -50,8 +49,8 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 		else
 		{
 			std::cout << "Invalid input try again." << std::endl;
-			system("pause");
 		}
+		system("pause");
 		std::cout << "\033[2J\033[1;1H";
 	}
 }

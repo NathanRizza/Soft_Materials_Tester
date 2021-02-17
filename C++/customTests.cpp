@@ -111,8 +111,15 @@ void manageCustomTests()
 			viewAllCustomTests();
 			std::cout << "Choose a test to view:" << std::endl;
 			std::cin >> chosenTestString;
-			test chosenTest = readTestFromFile(chosenTestString + ".txt");
-			printTestToScreen(chosenTest);
+			if (doesFileExist(chosenTestString + ".txt")) 
+			{
+				test chosenTest = readTestFromFile(chosenTestString + ".txt");
+				printTestToScreen(chosenTest);
+			}
+			else 
+			{
+				std::cout << "File named: " << chosenTestString << ".txt doesn't Exist" << std::endl;
+			}
 			system("pause");
 		}
 		else if (userInput == "3")
