@@ -157,27 +157,88 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 	return;
 }
 
-void compressionTest()
+void compressionTest(SerialPort controlArduino, SerialPort dataArduino)
 {
 
 }
 
-void adhesionTest()
+void adhesionTest(SerialPort controlArduino, SerialPort dataArduino)
 {
 
 }
 
-void creepTest()
+void creepTest(SerialPort controlArduino, SerialPort dataArduino)
 {
 
 }
 
-void StressRelaxationTest()
+void StressRelaxationTest(SerialPort controlArduino, SerialPort dataArduino)
 {
 
 }
 
-void runCustomTest()
+void runCustomTest(SerialPort controlArduino, SerialPort dataArduino)
 {
+	bool waitForName = true;
+	std::string filename = "";
+	std::string temp = "";
+	test customTest;
+	std::cout << "Enter the name of the test you would like to run. Or enter 'q' to quit." << std::endl;
+	while (waitForName) 
+	{
+		viewAllCustomTests();
+		std::cin >> filename;
+		if (filename == "q")
+		{
+			return;
+		}
+		std::cout << "\033[2J\033[1;1H";
+		if (doesFileExist(filename + ".txt")) 
+		{
+			waitForName = false;
+		}
+		else 
+		{
+			std::cout << "Test named " << filename << "does not exist."<<std::endl;
+		}
+	}
+	customTest = readTestFromFile(filename + ".txt");
+	std::cout << "Sending Test..." << std::endl;
+	serialWrite(controlArduino, "c");
+	serialWrite(controlArduino, std::to_string(customTest.amountSteps));
+	std::cout << "---------------------------------------------" << std::endl;
+	for (int i = 0; i < customTest.amountSteps; i++) 
+	{
+		std::cout << "Step " << (i+1) << std::endl;
 
+		std::cout << "Distance" << std::to_string(customTest.steps[i].distance) << std::endl;
+		std::cout << "Velocity" << std::to_string(customTest.steps[i].velocity) << std::endl;
+		std::cout << "Acceleration" << std::to_string(customTest.steps[i].acceleration) << std::endl;
+	}
+	std::string perform;
+	std::cout << "Please confirm the test above is the Test you wish to send." << std::endl;
+	std::cout << "(q)- Return to menu." << std::endl << "Any other key will begin the test." << std::endl;
+	std::cin >> perform;
+	if (perform == "q") 
+	{
+		return;
+	}
+	std::cout << "\033[2J\033[1;1H";
+
+	for (int i = 0; i < customTest.amountSteps; i++)
+	{
+		std::cout << "Step " << (i + 1) << " sent..." << std::endl;
+		serialWrite(controlArduino, std::to_string(customTest.steps[i].distance));
+		serialWrite(controlArduino, std::to_string(customTest.steps[i].velocity));
+		serialWrite(controlArduino, std::to_string(customTest.steps[i].acceleration));
+	}
+
+		std::cout << "\033[2J\033[1;1H";
+		std::cout << "Test sent." << std::endl;
+		Sleep(100);
+		temp = serialRead(controlArduino);
+		temp = serialRead(dataArduino);
+		getData(dataArduino);
+
+	return;
 }

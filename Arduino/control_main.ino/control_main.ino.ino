@@ -23,7 +23,7 @@ void setup()
    stepper.setAcceleration(10000);
    stepper.runToNewPosition(800);
    stepper.runToNewPosition(0);
-   pinMode(10, OUTPUT); //commuincation channel between control and data arduino.
+   pinMode(10, OUTPUT); //commuincation channel between control and data arduino. - 10
 }
 
 void loop()

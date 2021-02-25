@@ -139,10 +139,10 @@ void manageCustomTests()
 }
 
 //-----------Should be Done------------
-void viewAllCustomTests() //not done we still need this to print them all out to the screen somehow
+void viewAllCustomTests() 
 {
 	std::string entryTemp = "temp";
-	for (const auto& entry : fs::directory_iterator("."))//backslash error maybe
+	for (const auto& entry : fs::directory_iterator("."))
 	{
 		entryTemp = entry.path().string();
 
@@ -232,12 +232,12 @@ void writeTestToFile(test printTest)
 }
 
 //-----------Should be Done------------
-test readTestFromFile(std::string filename)
+test readTestFromFile(std::string fullFilename)
 {
 	test returnedTest;
 	std::ifstream inFile;
 
-	inFile.open(filename);
+	inFile.open(fullFilename);
 
 	inFile >> returnedTest.name;
 	inFile >> returnedTest.amountSteps;
