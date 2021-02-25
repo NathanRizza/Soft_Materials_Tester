@@ -27,7 +27,7 @@
         while(digitalRead(10)==HIGH)
         {
           measureAndPrint();
-          delay(1000);
+          delay(100);
         }
         Serial.print('d');
         delay(5000);

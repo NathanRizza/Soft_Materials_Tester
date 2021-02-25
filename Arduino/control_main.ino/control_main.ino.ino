@@ -1,7 +1,7 @@
 //Nathan Rizza
 //Created: 12/10/2020
 //
-//
+//Control Arduino is COM3
 
 #include <AccelStepper.h>
 
@@ -13,12 +13,7 @@ void setup()
 { 
    Serial.begin(9600);
    stepper.setMaxSpeed(maxSneed);
-   //stepper.moveTo(800);
    stepper.setSpeed(maxSneed);
-   //stepper.runSpeedToPosition();
-   //stepper.moveTo(0);
-   //stepper.setSpeed(2500);
-   //stepper.runSpeedToPosition();
    
    stepper.setAcceleration(10000);
    stepper.runToNewPosition(800);
@@ -44,32 +39,18 @@ void testMenu(String testID)
   if(testID == "t")
   {
     tensileSetup();
-    //Serial.println("Test Completed Sucsessfully");
   }
-  else if(testID == "e")
+  else if(testID == "c")
   {
-    while(true)
-    {
-    Serial.print("echo");
-    String data = readData();
-    Serial.print(100);
-    }
+    customTestSetup();
   }
   else if(testID =="r")
   {
-    int i=0;
-    stepper.moveTo(1600);//http://www.airspayce.com/mikem/arduino/AccelStepper/classAccelStepper.html#ace236ede35f87c63d18da25810ec9736
-    while(i <1600)
-    {
-      if(stepper.run())
-      {
-      i++;
-      }
-    }
+
   }
   else if(testID =="n")
   {
-    stepper.runToNewPosition(10000);
+
   }
   return;
 }
@@ -114,6 +95,50 @@ void tensileSetup()
     return;
 }
 
+void customTestSetup()
+{
+    String distance = "d";
+    String velocity = "v";
+    String acceleration = "a";
+    String stringSteps = "0";
+    int disInt =0;
+    int velInt = 0;
+    int accInt =0;
+    int intSteps = 0;
+
+    stringSteps = readData();
+    intSteps=stringSteps.toInt();
+    Serial.println('c');
+    delay(500);
+    digitalWrite(10,HIGH);
+    delay(1000);
+    for(int i=0; i<intSteps;i++)
+    {
+    Serial.println('c');
+    distance = readData();
+    Serial.println('c');
+    velocity = readData();
+    Serial.println('c');
+    acceleration = readData();
+    
+    disInt = distance.toInt();
+    velInt = velocity.toInt();
+    accInt = acceleration.toInt();
+    
+    runStep(disInt,velInt,accInt);
+    }
+    digitalWrite(10,LOW);
+    delay(500);
+    Serial.println("d");
+    
+    delay(5000);
+    stepper.setSpeed(maxSneed);
+    stepper.setAcceleration(0);
+    stepper.runToNewPosition(0);
+    
+    return;
+}
+
 void runStep(int distance, int velocity, int acceleration)
 {
   stepper.setSpeed(velocity);
@@ -135,7 +160,7 @@ String readData()
   {
   if(Serial.available()>0)
      {
-      delay(500);
+      delay(300);
       info = Serial.readStringUntil('\n');
       flushRead();
       return info;

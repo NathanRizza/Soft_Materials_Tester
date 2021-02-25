@@ -95,6 +95,7 @@ void manageCustomTests()
 		//viewAllCustomTests(); maybe add this here?
 		std::string userInput = "9";
 		std::cin >> userInput;
+		std::cout << "\033[2J\033[1;1H";
 		if (userInput == "0")
 		{
 			return;
@@ -244,8 +245,8 @@ test readTestFromFile(std::string fullFilename)
 	for (int i = 0; i < returnedTest.amountSteps; i++)
 	{
 		inFile >> returnedTest.steps[i].distance;
-		inFile >> returnedTest.steps[i].acceleration;
 		inFile >> returnedTest.steps[i].velocity;
+		inFile >> returnedTest.steps[i].acceleration;
 	}
 	inFile.close();
 	return returnedTest;

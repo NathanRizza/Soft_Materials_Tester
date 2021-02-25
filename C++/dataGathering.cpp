@@ -15,7 +15,7 @@ void getData(SerialPort dataArduino)
 			break;
 		}
 		forceValues[j] = std::stof(data);
-		Sleep(1000);//Every 10th of a second
+		Sleep(100);//Every 10th of a second
 		j++;
 	}
 	std::string fileName = "";

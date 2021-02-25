@@ -44,7 +44,7 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 		}
 		else if (userInput == "6")
 		{
-			runCustomTest();
+			runCustomTest(controlArduino,dataArduino);
 		}
 		else
 		{
@@ -157,25 +157,13 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 	return;
 }
 
-void compressionTest(SerialPort controlArduino, SerialPort dataArduino)
-{
+void compressionTest(){}
 
-}
+void adhesionTest(){}
 
-void adhesionTest(SerialPort controlArduino, SerialPort dataArduino)
-{
+void creepTest(){}
 
-}
-
-void creepTest(SerialPort controlArduino, SerialPort dataArduino)
-{
-
-}
-
-void StressRelaxationTest(SerialPort controlArduino, SerialPort dataArduino)
-{
-
-}
+void StressRelaxationTest(){}
 
 void runCustomTest(SerialPort controlArduino, SerialPort dataArduino)
 {
@@ -203,28 +191,28 @@ void runCustomTest(SerialPort controlArduino, SerialPort dataArduino)
 		}
 	}
 	customTest = readTestFromFile(filename + ".txt");
-	std::cout << "Sending Test..." << std::endl;
-	serialWrite(controlArduino, "c");
-	serialWrite(controlArduino, std::to_string(customTest.amountSteps));
 	std::cout << "---------------------------------------------" << std::endl;
 	for (int i = 0; i < customTest.amountSteps; i++) 
 	{
 		std::cout << "Step " << (i+1) << std::endl;
 
-		std::cout << "Distance" << std::to_string(customTest.steps[i].distance) << std::endl;
-		std::cout << "Velocity" << std::to_string(customTest.steps[i].velocity) << std::endl;
-		std::cout << "Acceleration" << std::to_string(customTest.steps[i].acceleration) << std::endl;
+		std::cout << "Distance:     " << std::to_string(customTest.steps[i].distance) << std::endl;
+		std::cout << "Velocity:     " << std::to_string(customTest.steps[i].velocity) << std::endl;
+		std::cout << "Acceleration: " << std::to_string(customTest.steps[i].acceleration) << std::endl<<std::endl;
 	}
 	std::string perform;
 	std::cout << "Please confirm the test above is the Test you wish to send." << std::endl;
-	std::cout << "(q)- Return to menu." << std::endl << "Any other key will begin the test." << std::endl;
+	std::cout << "(q) - Return to menu." << std::endl;
+	std::cout << "(p) - Perform Test."   << std::endl;
 	std::cin >> perform;
 	if (perform == "q") 
 	{
 		return;
 	}
+	std::cout << "Sending Test..." << std::endl;
+	serialWrite(controlArduino, "c");
+	serialWrite(controlArduino, std::to_string(customTest.amountSteps));
 	std::cout << "\033[2J\033[1;1H";
-
 	for (int i = 0; i < customTest.amountSteps; i++)
 	{
 		std::cout << "Step " << (i + 1) << " sent..." << std::endl;
