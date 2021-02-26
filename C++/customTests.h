@@ -2,13 +2,13 @@
 
 #include "test.h"
 #include <filesystem>
-#include <fstream>  
-
+#include <fstream>
+#include "a2pc.h"
 
 #ifndef CUSTOMTESTS_H
 #define CUSTOMTESTS_H
 
-void runCustomTest();
+void runCustomTest(SerialPort controlArduino,test customTest);
 void MakeCustomTest();
 void manageCustomTests();
 void viewAllCustomTests();
@@ -16,9 +16,9 @@ void deleteCustomTest(std::string filename);
 bool canOpenFile(std::string filename);
 bool doesFileExist(std::string fullFileName);
 void writeTestToFile(test printTest);
-std::string printTestStep(testStep i);
 void printTestToScreen(test printTest);
 test readTestFromFile(std::string filename);
+void viewSpecificTest();
 
 
 #endif //CUSTOMTESTS_H

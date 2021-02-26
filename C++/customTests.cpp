@@ -2,6 +2,24 @@
 
 namespace fs = std::filesystem;
 
+void runCustomTest(SerialPort controlArduino,test customTest)
+{
+	std::cout << "Sending Test..." << std::endl;
+	serialWrite(controlArduino, "c");
+	serialWrite(controlArduino, std::to_string(customTest.amountSteps));
+	std::cout << "\033[2J\033[1;1H";
+	for (int i = 0; i < customTest.amountSteps; i++)
+	{
+		std::cout << "Step " << (i + 1) << " sent..." << std::endl;
+		serialWrite(controlArduino, std::to_string(customTest.steps[i].distance));
+		serialWrite(controlArduino, std::to_string(customTest.steps[i].velocity));
+		serialWrite(controlArduino, std::to_string(customTest.steps[i].acceleration));
+	}
+
+	std::cout << "\033[2J\033[1;1H";
+	std::cout << "Test sent." << std::endl;
+}
+
 void MakeCustomTest()
 {
 	test madeTest;
@@ -107,21 +125,7 @@ void manageCustomTests()
 		}
 		else if (userInput == "2")
 		{
-			std::string chosenTestString = "temp";
-			std::cout << "All Tests:" << std::endl;
-			viewAllCustomTests();
-			std::cout << "Choose a test to view:" << std::endl;
-			std::cin >> chosenTestString;
-			if (doesFileExist(chosenTestString + ".txt")) 
-			{
-				test chosenTest = readTestFromFile(chosenTestString + ".txt");
-				printTestToScreen(chosenTest);
-			}
-			else 
-			{
-				std::cout << "File named: " << chosenTestString << ".txt doesn't Exist" << std::endl;
-			}
-			system("pause");
+			viewSpecificTest();
 		}
 		else if (userInput == "3")
 		{
@@ -252,14 +256,6 @@ test readTestFromFile(std::string fullFilename)
 	return returnedTest;
 }
 
-//probably not used
-std::string printTestStep(testStep i)
-{
-	std::string testStepString;
-	testStepString = i.distance + '\n' << i.velocity + '\ n' + i.acceleration;
-	return testStepString;
-}
-
 //-----------Should be Done------------
 void printTestToScreen(test printTest)
 {
@@ -269,4 +265,23 @@ void printTestToScreen(test printTest)
 	{
 		std::cout << "Step " << (i + 1) << ": (Disatance:" << printTest.steps[i].distance << ", Velocity:" << printTest.steps[i].velocity << ", Acceleration:" << printTest.steps[i].acceleration << ")" << '\n';
 	}
+}
+
+void viewSpecificTest() 
+{
+	std::string chosenTestString = "temp";
+	std::cout << "All Tests:" << std::endl;
+	viewAllCustomTests();
+	std::cout << "Choose a test to view:" << std::endl;
+	std::cin >> chosenTestString;
+	if (doesFileExist(chosenTestString + ".txt"))
+	{
+		test chosenTest = readTestFromFile(chosenTestString + ".txt");
+		printTestToScreen(chosenTest);
+	}
+	else
+	{
+		std::cout << "File named: " << chosenTestString << ".txt doesn't Exist" << std::endl;
+	}
+	system("pause");
 }

@@ -50,6 +50,7 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 		{
 			std::cout << "Invalid input try again." << std::endl;
 		}
+		flushArduinos(dataArduino, controlArduino);
 		system("pause");
 		std::cout << "\033[2J\033[1;1H";
 	}
@@ -72,6 +73,7 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 	std::string velString = "v";
 	std::string accString = "a";
 	std::string temp = "";
+	std::string fileName = "";
 	while (done)
 	{
 		std::cout << "Tensile Test Menu:" << std::endl;
@@ -107,42 +109,14 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 		std::cout << "Velocity(Pulses/sec): "<< velString << std::endl;
 		std::cout << "Acceleration(Pulses/sec^2): "<< accString << std::endl;
 
-
-		std::cout << std::endl;
-		std::cout << "(1): Perform Test" << std::endl;
-		std::cout << "(2): Re-enter Test" << std::endl;
-		std::cout << "(3): Exit without Performing Test" << std::endl;
-
-		std::string confirmedString = "0";
-		while (confirmedString != "1" && confirmedString != "2" && confirmedString != "3")
+		if (abandonTest)
 		{
-			std::cin >> confirmedString;
-
-			if (confirmedString == "1")
-			{
-				done = false;
-				//Run test
-
-
-			}
-			else if (confirmedString == "2")
-			{
-
-			}
-			else if (confirmedString == "3")
-			{
-				return;
-			}
-			else
-			{
-				std::cout << "Invalid input try again." << std::endl;
-				system("pause");
-			}
-
+			return;
 		}
 		std::cout << "\033[2J\033[1;1H";
 	}
-	
+
+	fileName = getValidFileName();
 	std::cout << "Sending test to arduino, please wait..."<< std::endl;
 	serialWrite(controlArduino, "t");
 	serialWrite(controlArduino, disString);
@@ -152,8 +126,7 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 	Sleep(100);
 	temp = serialRead(controlArduino);
 	temp = serialRead(dataArduino);
-	getData(dataArduino);
-	
+	getData(dataArduino,fileName);
 	return;
 }
 
@@ -170,8 +143,10 @@ void runCustomTest(SerialPort controlArduino, SerialPort dataArduino)
 	bool waitForName = true;
 	std::string filename = "";
 	std::string temp = "";
+	std::string csvFileName = "";
+	std::string perform;
 	test customTest;
-	std::cout << "Enter the name of the test you would like to run. Or enter 'q' to quit." << std::endl;
+	std::cout << "Enter the name of the test you would like to run (without \".txt\"). Or enter 'q' to quit." << std::endl;
 	while (waitForName) 
 	{
 		viewAllCustomTests();
@@ -200,33 +175,44 @@ void runCustomTest(SerialPort controlArduino, SerialPort dataArduino)
 		std::cout << "Velocity:     " << std::to_string(customTest.steps[i].velocity) << std::endl;
 		std::cout << "Acceleration: " << std::to_string(customTest.steps[i].acceleration) << std::endl<<std::endl;
 	}
-	std::string perform;
+
 	std::cout << "Please confirm the test above is the Test you wish to send." << std::endl;
-	std::cout << "(q) - Return to menu." << std::endl;
-	std::cout << "(p) - Perform Test."   << std::endl;
-	std::cin >> perform;
-	if (perform == "q") 
+	if (abandonTest) 
 	{
 		return;
 	}
-	std::cout << "Sending Test..." << std::endl;
-	serialWrite(controlArduino, "c");
-	serialWrite(controlArduino, std::to_string(customTest.amountSteps));
-	std::cout << "\033[2J\033[1;1H";
-	for (int i = 0; i < customTest.amountSteps; i++)
-	{
-		std::cout << "Step " << (i + 1) << " sent..." << std::endl;
-		serialWrite(controlArduino, std::to_string(customTest.steps[i].distance));
-		serialWrite(controlArduino, std::to_string(customTest.steps[i].velocity));
-		serialWrite(controlArduino, std::to_string(customTest.steps[i].acceleration));
-	}
 
-		std::cout << "\033[2J\033[1;1H";
-		std::cout << "Test sent." << std::endl;
-		Sleep(100);
-		temp = serialRead(controlArduino);
-		temp = serialRead(dataArduino);
-		getData(dataArduino);
+	csvFileName = getValidFileName();
 
+	runCustomTest(controlArduino, customTest);
+	getData(dataArduino,csvFileName);
 	return;
+}
+
+bool abandonTest() 
+{
+	std::string confirmedString = "0";
+	while (confirmedString != "1" && confirmedString != "2" && confirmedString != "3")
+	{
+		std::cout << std::endl;
+		std::cout << "(1): Perform Test" << std::endl;
+		std::cout << "(0): Exit without Performing Test" << std::endl;
+		std::cin >> confirmedString;
+		std::cout << "\033[2J\033[1;1H";
+		if (confirmedString == "1")//Run
+		{
+			return false;
+		}
+
+		else if (confirmedString == "0")//Quit
+		{
+			return true;
+		}
+		else
+		{
+			std::cout << "\033[2J\033[1;1H";
+			std::cout << "Invalid input try again." << std::endl;
+			system("pause");
+		}
+	}
 }

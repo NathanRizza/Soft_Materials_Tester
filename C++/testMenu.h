@@ -15,5 +15,6 @@ void adhesionTest();
 void creepTest();
 void StressRelaxationTest();
 void runCustomTest(SerialPort controlArduino, SerialPort dataArduino);
+bool abandonTest();
 
 #endif //TESTMENU
