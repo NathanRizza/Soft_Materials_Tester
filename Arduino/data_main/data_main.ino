@@ -6,7 +6,7 @@
         #include <Wire.h>
     #include <Adafruit_ADS1015.h>
      
-    Adafruit_ADS1015 ads1115;
+    Adafruit_ADS1015 ads1115(0x48);
      
     void setup(void)
     {
@@ -40,11 +40,10 @@ void measureAndPrint()
     int16_t adc0, adc1;
     //adc2, adc3;
     adc0 = ads1115.readADC_SingleEnded(0);
-    //adc1 = ads1115.readADC_SingleEnded(1);
+    adc1 = ads1115.readADC_SingleEnded(1);
     //adc2 = ads1115.readADC_SingleEnded(2);
     //adc3 = ads1115.readADC_SingleEnded(3);
     Serial.println(adc0);
-    //Serial.println(adc1);
     //Serial.println(adc2);
     //Serial.println(adc3);
 }

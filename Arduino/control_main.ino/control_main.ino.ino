@@ -6,7 +6,11 @@
 #include <AccelStepper.h>
 
 //AccelStepper stepper; // Defaults to AccelStepper::FULL4WIRE (4 pins) on 2, 3, 4, 5
-AccelStepper stepper(1,12,11); //Red-12 Blue-11
+
+int CW = 11; //Green 
+int CP = 12; //Yellow
+
+AccelStepper stepper(1,CP,CW); // 1 if for direction.
 
 int maxSneed = 2500;
 void setup()
