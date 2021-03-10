@@ -59,7 +59,6 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 
 void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 {
-	bool done = true;
 	float matLength = 0;
 	float matWidth = 0;
 	float matThickness = 0;
@@ -74,9 +73,12 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 	std::string accString = "a";
 	std::string temp = "";
 	std::string fileName = "";
-	while (done)
-	{
+
 		std::cout << "Tensile Test Menu:" << std::endl;
+
+
+		//dont worry about any thing execpt cross sctional area.
+
 		//Temp removed untill data collection system is online
 		//std::cout << "Enter the Length of the Material in (mm)" << std::endl;
 		//std::cin >> matLength;
@@ -109,12 +111,11 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 		std::cout << "Velocity(Pulses/sec): "<< velString << std::endl;
 		std::cout << "Acceleration(Pulses/sec^2): "<< accString << std::endl;
 
-		if (abandonTest)
+		if (abandonTest())
 		{
 			return;
 		}
 		std::cout << "\033[2J\033[1;1H";
-	}
 
 	fileName = getValidFileName();
 	std::cout << "Sending test to arduino, please wait..."<< std::endl;
@@ -165,6 +166,7 @@ void runCustomTest(SerialPort controlArduino, SerialPort dataArduino)
 			std::cout << "Test named " << filename << "does not exist."<<std::endl;
 		}
 	}
+
 	customTest = readTestFromFile(filename + ".txt");
 	std::cout << "---------------------------------------------" << std::endl;
 	for (int i = 0; i < customTest.amountSteps; i++) 
