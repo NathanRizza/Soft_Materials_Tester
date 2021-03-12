@@ -23,16 +23,4 @@ int main()
 	{
 		mainMenu(controlArduino,dataArduino);
 	}
-
-		//while (dataArduino.isConnected()) 
-		//{
-		//	std::cout << "Enter your command: " << std::endl;
-		//	std::string data;
-		//	std::cin >> data;
-		//	
-		//	serialWrite(dataArduino,data);
-		//	std::string output = serialRead(dataArduino);
-		//	std::cout << output;
-		//}
-		//return 0;
 }

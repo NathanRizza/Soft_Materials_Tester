@@ -9,10 +9,9 @@
 
 int CW = 11; //Green 
 int CP = 12; //Yellow
-
 AccelStepper stepper(1,CP,CW); // 1 if for direction.
-
 int maxSneed = 2500;
+
 void setup()
 { 
    Serial.begin(9600);
@@ -56,6 +55,7 @@ void testMenu(String testID)
   {
 
   }
+  returnToHome();
   return;
 }
 
@@ -90,11 +90,6 @@ void tensileSetup()
     digitalWrite(10,LOW);
     delay(500);
     Serial.println("d");
-    
-    delay(5000);
-    stepper.setSpeed(maxSneed);
-    stepper.setAcceleration(0);
-    stepper.runToNewPosition(0);
     
     return;
 }
@@ -134,20 +129,24 @@ void customTestSetup()
     digitalWrite(10,LOW);
     delay(500);
     Serial.println("d");
-    
-    delay(5000);
-    stepper.setSpeed(maxSneed);
-    stepper.setAcceleration(0);
-    stepper.runToNewPosition(0);
-    
+         
     return;
 }
 
 void runStep(int distance, int velocity, int acceleration)
 {
-  stepper.setSpeed(velocity);
+  abs(distance);
+  
+  if(velocity>maxSneed)
+  {
+  stepper.setMaxSpeed(maxSneed);
+  }
+  else
+  {
+  stepper.setMaxSpeed(velocity);  
+  }
   stepper.setAcceleration(acceleration);
-  stepper.runToNewPosition(distance);
+  stepper.runToNewPosition(-distance);
   return;
 }
 
@@ -181,4 +180,12 @@ void flushRead()
     temp = Serial.read();
   }
   return;
+}
+
+void returnToHome()
+{
+    delay(5000);
+    stepper.setMaxSpeed(maxSneed);
+    stepper.setAcceleration(0);
+    stepper.runToNewPosition(0);
 }

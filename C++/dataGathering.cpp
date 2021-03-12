@@ -1,5 +1,7 @@
 #include "dataGathering.h"
 
+int samplesPerSecond = 20; // Must also be changes in the arduino code.
+
 void getData(SerialPort dataArduino,std::string fileName) //add teacher mode
 {
 	int j = 0;
@@ -15,7 +17,7 @@ void getData(SerialPort dataArduino,std::string fileName) //add teacher mode
 			break;
 		}
 		outfile << 0 << ',' << std::stof(data) << std::endl;
-		Sleep(100);//Every 10th of a second
+		Sleep(1000/samplesPerSecond);// 20 samples a second. Make a variable later
 		j++;
 	}
 	std::cout << "Data saved to file: " + fileName + ".csv " << std::endl;
