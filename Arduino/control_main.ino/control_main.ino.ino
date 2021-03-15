@@ -14,7 +14,7 @@ int maxSneed = 2500;
 
 void setup()
 { 
-   Serial.begin(9600);
+   Serial.begin(256000);
    stepper.setMaxSpeed(maxSneed);
    stepper.setSpeed(maxSneed);
    

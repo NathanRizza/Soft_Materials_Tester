@@ -99,9 +99,9 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 		std::cin >> accCM;
 
 
-		disPulse = distanceCM * (1600 / 0.3);
-		velPulse = velocityCM * (1600 / 0.3);
-		accPulse = accCM *(1600/0.3);
+		disPulse = cmToPulse(distanceCM);
+		velPulse = cmToPulse(velocityCM);
+		accPulse = cmToPulse(accCM);
 		disString = std::to_string(disPulse);
 		velString = std::to_string(velPulse);
 		accString = std::to_string(accPulse);
@@ -217,4 +217,9 @@ bool abandonTest()
 			system("pause");
 		}
 	}
+}
+
+int cmToPulse(float cm) 
+{
+	return (cm * 1600 * (3));
 }

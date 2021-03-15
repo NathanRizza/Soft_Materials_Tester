@@ -26,7 +26,7 @@ int16_t results;
   //ads1115.setGain(GAIN_EIGHT);      // 8x gain   +/- 0.512V  1 bit = 0.25mV   0.015625mV
   //ads1115.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.125mV  0.0078125mV
 
-      Serial.begin(9600);
+      Serial.begin(256000);
       pinMode(10, INPUT);//Recives signals from control arduino
       ads1115.begin();
   return;
@@ -34,15 +34,13 @@ int16_t results;
      
     void loop(void)
     {
-       measureAndPrint();
-          delay(50);
       if(digitalRead(10)== HIGH)
       {
         zero = ads1115.readADC_Differential_0_1(); 
         while(digitalRead(10)==HIGH)
         {
           measureAndPrint();
-          delay(55);
+          delay(50);
         }
         Serial.print('d');
         delay(5000);
