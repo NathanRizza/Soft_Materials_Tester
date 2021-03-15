@@ -19,7 +19,7 @@ void setup()
    stepper.setSpeed(maxSneed);
    
    stepper.setAcceleration(10000);
-   stepper.runToNewPosition(800);
+   stepper.runToNewPosition(-100);
    stepper.runToNewPosition(0);
    pinMode(10, OUTPUT); //commuincation channel between control and data arduino. - 10
 }
@@ -65,9 +65,9 @@ void tensileSetup()
     String distance = "d";
     String velocity = "v";
     String acceleration = "a";
-    int disInt =0;
-    int velInt = 0;
-    int accInt =0;
+    long disLong =0;
+    long velLong = 0;
+    long accLong =0;
     
     Serial.println('c');
     distance = readData();
@@ -77,16 +77,16 @@ void tensileSetup()
     acceleration = readData();
     
     //convert Strings to ints
+        
+    disLong = atol(distance.c_str());
+    velLong = atol(velocity.c_str());
+    accLong = atol(acceleration.c_str());
     
-    disInt = distance.toInt();
-    velInt = velocity.toInt();
-    accInt = acceleration.toInt();
-
     Serial.println('b');
     delay(500);
     digitalWrite(10,HIGH);
     delay(1000);
-    tesnsileTest(disInt,velInt,accInt);
+    tesnsileTest(disLong,velLong,accLong);
     digitalWrite(10,LOW);
     delay(500);
     Serial.println("d");
@@ -100,9 +100,9 @@ void customTestSetup()
     String velocity = "v";
     String acceleration = "a";
     String stringSteps = "0";
-    int disInt =0;
-    int velInt = 0;
-    int accInt =0;
+    long disLong =0;
+    long velLong = 0;
+    long accLong =0;
     int intSteps = 0;
 
     stringSteps = readData();
@@ -120,11 +120,11 @@ void customTestSetup()
     Serial.println('c');
     acceleration = readData();
     
-    disInt = distance.toInt();
-    velInt = velocity.toInt();
-    accInt = acceleration.toInt();
+    disLong = atol(distance.c_str());
+    velLong = atol(velocity.c_str());
+    accLong = atol(acceleration.c_str());
     
-    runStep(disInt,velInt,accInt);
+    runStep(disLong,velLong,accLong);
     }
     digitalWrite(10,LOW);
     delay(500);
@@ -133,10 +133,8 @@ void customTestSetup()
     return;
 }
 
-void runStep(int distance, int velocity, int acceleration)
+void runStep(long distance, long velocity, long acceleration)
 {
-  abs(distance);
-  
   if(velocity>maxSneed)
   {
   stepper.setMaxSpeed(maxSneed);
@@ -146,11 +144,13 @@ void runStep(int distance, int velocity, int acceleration)
   stepper.setMaxSpeed(velocity);  
   }
   stepper.setAcceleration(acceleration);
+  
   stepper.runToNewPosition(-distance);
+     
   return;
 }
 
-void tesnsileTest(int disInt,int velInt,int accInt)
+void tesnsileTest(long disInt,long velInt,long accInt)
 {
     runStep(disInt,velInt,accInt);
     return;  
@@ -188,4 +188,16 @@ void returnToHome()
     stepper.setMaxSpeed(maxSneed);
     stepper.setAcceleration(0);
     stepper.runToNewPosition(0);
+}
+
+bool isPositive(long distance)
+{
+if(distance > 0)
+{
+return true;
+}
+else
+{
+return false;
+}
 }

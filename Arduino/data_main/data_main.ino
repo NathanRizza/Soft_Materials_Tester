@@ -42,7 +42,7 @@ int16_t results;
         while(digitalRead(10)==HIGH)
         {
           measureAndPrint();
-          delay(50);
+          delay(55);
         }
         Serial.print('d');
         delay(5000);
@@ -52,6 +52,6 @@ int16_t results;
 void measureAndPrint()
 {
       results = ads1115.readADC_Differential_0_1(); 
-      Serial.println(results-zero);
+      Serial.println(abs(results-zero));
       return;
 }
