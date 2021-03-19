@@ -1,6 +1,6 @@
 
 // Creator: Nathan Rizza
-//Created: 2/4/2021
+//Created: 3/18/2021
 //Data arduino is COM4
 
 #include <Wire.h>
@@ -8,8 +8,6 @@
 Adafruit_ADS1115 ads1115;
 
 int16_t zero;
-int16_t results;
-
 
     void setup(void)
     {
@@ -26,30 +24,40 @@ int16_t results;
   //ads1115.setGain(GAIN_EIGHT);      // 8x gain   +/- 0.512V  1 bit = 0.25mV   0.015625mV
   //ads1115.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.125mV  0.0078125mV
 
-      Serial.begin(256000); // Use for connection to PC
-      //Serial.begin(9600); //For testing in serial monitor.
+      Serial.begin(9600);
       pinMode(10, INPUT);//Recives signals from control arduino
       ads1115.begin();
+      zero = ads1115.readADC_Differential_0_1();
+      Serial.println("How to calibrate:");
+      Serial.println("1.) Start this program with the load cell ready to accept the known weights.");
+      Serial.println("2.) Add known weights after program has started.");
+      Serial.println("3.) Press any key to start calibrating the load cell.");
+      Serial.println("4.) The arduino will count to 10 where it will take ten measurements.");
+      Serial.println("5.) After the measurements have been taken the program will spit out the average bits measured for the known weight.");
     }
-     
-    void loop(void)
+
+    
+      void loop(void)
     {
-      if(digitalRead(10)== HIGH)
+      String data=""; 
+      if (Serial.available() > 0) 
       {
-        zero = ads1115.readADC_Differential_0_1(); 
-        while(digitalRead(10)==HIGH)
-        {
-          measureAndPrint();
-          delay(50);
-        }
-        Serial.print('d');
-        delay(5000);
+        calibrate();
+        data = Serial.read();
       }
     }
+
+    void calibrate()
+    {
+     long sum=0;
+     for(int i =0;i<10;i++)
+     {
+      Serial.print(i);
+      sum = sum+ (ads1115.readADC_Differential_0_1()-zero); ;
+      delay(1000);
+     }
+     Serial.println();
+     Serial.print("Average bits: ");
+     Serial.println(sum/10);
+    }
       
-void measureAndPrint()
-{
-      results = ads1115.readADC_Differential_0_1(); \
-      Serial.println(abs(results-zero));
-      return;
-}
