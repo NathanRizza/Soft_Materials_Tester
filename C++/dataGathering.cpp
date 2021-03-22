@@ -2,12 +2,14 @@
 
 int samplesPerSecond = 20; // Must also be changed in the arduino code.
 
-void getData(SerialPort dataArduino,std::string fileName) //add teacher mode
+void getData(SerialPort dataArduino,std::string fileName)
 {
 	float time = 0;
+	float forceValue = 0;
+	float conversionFactor = 3.24; // make this changeable in settings
 	std::string data = "0";
-	std::ofstream outfile(fileName + ".csv");
-	outfile << "Time" << "," << "Force" << "\n";
+	std::ofstream outfile(fileName + ".csv"); //"/testData/"+ ?
+	outfile << "Time (sec)" << "," << "Force (N)" << "\n";
 	flushArduinos(dataArduino);
 	while (true)
 	{
@@ -16,7 +18,9 @@ void getData(SerialPort dataArduino,std::string fileName) //add teacher mode
 		{
 			break;
 		}
-		outfile << time << ',' << std::stof(data) << std::endl;
+		forceValue = std::stof(data);
+		forceValue = (forceValue / conversionFactor);
+		outfile << (truncf(time*10)/10) << ',' << forceValue << std::endl;
 		Sleep((1000 / samplesPerSecond)-1);
 		time = time+(1.0/samplesPerSecond);
 	}
@@ -27,7 +31,7 @@ void getData(SerialPort dataArduino,std::string fileName) //add teacher mode
 std::string getValidFileName()
 {
 	std::string fileName = "";
-	std::cout << "Name the file that the data will be saved to." << std::endl;
+	std::cout << "Name the file that the data will be saved to. (One word, no spaces)" << std::endl;
 	std::cin >> fileName;
 
 	while (doesFileExist(fileName))

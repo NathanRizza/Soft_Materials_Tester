@@ -1,6 +1,7 @@
 #include "customTests.h"
 
 namespace fs = std::filesystem;
+int maxSpeed = 2500;
 
 void runCustomTest(SerialPort controlArduino,test customTest)
 {
@@ -47,6 +48,7 @@ void MakeCustomTest()
 			std::cin >> madeTest.steps[madeTest.amountSteps].distance;
 			std::cout << "Enter the Velocity (Pulses/sec)" << std::endl;
 			std::cin >> madeTest.steps[madeTest.amountSteps].velocity;
+			maxSpeedCheck(madeTest.steps[madeTest.amountSteps].velocity);
 			std::cout << "Enter the Acceleration (Pulses/sec)" << std::endl;
 			std::cin >> madeTest.steps[madeTest.amountSteps].acceleration;
 
@@ -284,4 +286,15 @@ void viewSpecificTest()
 		std::cout << "File named: " << chosenTestString << ".txt doesn't Exist" << std::endl;
 	}
 	system("pause");
+}
+
+void maxSpeedCheck(int& pulsePerSec) 
+{
+	if (pulsePerSec > maxSpeed) 
+	{
+		std::cout << "ERROR: Cannot have a speed greater than 0.52cm/cec (2500 pulses/sec)" << std::endl;
+		std::cout << "Changing entered speed to the max speed." << std::endl;
+		pulsePerSec = 2500;
+	}
+	return;
 }

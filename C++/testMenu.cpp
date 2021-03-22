@@ -89,19 +89,18 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 
 		std::cout << "How far would you like the Tester to pull in addition to the current displacement? (cm)" << std::endl;
 		std::cin >> distanceCM;
-	
+		disPulse = cmToPulse(distanceCM);
 
 		std::cout << "Velocity of the Tester? (cm/s)" << std::endl;
 		std::cin >> velocityCM;
-
+		velPulse = cmToPulse(velocityCM);
+		maxSpeedCheck(velPulse);
 
 		std::cout << "Acceleration of the Tester? (cm/s)" << std::endl;
 		std::cin >> accCM;
-
-
-		disPulse = cmToPulse(distanceCM);
-		velPulse = cmToPulse(velocityCM);
 		accPulse = cmToPulse(accCM);
+
+
 		disString = std::to_string(disPulse);
 		velString = std::to_string(velPulse);
 		accString = std::to_string(accPulse);

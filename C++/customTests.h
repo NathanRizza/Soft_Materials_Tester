@@ -19,6 +19,7 @@ void writeTestToFile(test printTest);
 void printTestToScreen(test printTest);
 test readTestFromFile(std::string filename);
 void viewSpecificTest();
+void maxSpeedCheck(int& pulsePerSec);
 
 
 #endif //CUSTOMTESTS_H
