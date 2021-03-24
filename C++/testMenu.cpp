@@ -4,7 +4,7 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 {
 	while (true)
 	{
-		std::cout << "\033[2J\033[1;1H"; // Clear consul
+		std::cout << "\033[2J\033[1;1H";
 		std::cout << "What test would you like to run?" << std::endl;
 		std::cout << "(1): Tensile Test" << std::endl;
 		std::cout << "(2): Compression Test" << std::endl;
@@ -24,6 +24,7 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 		}
 		else if (userInput == "1")
 		{
+			showMaxSettings();
 			tensileTest(controlArduino, dataArduino);
 		}
 		else if (userInput == "2")
@@ -76,39 +77,29 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 
 		std::cout << "Tensile Test Menu:" << std::endl;
 
-
-		//dont worry about any thing execpt cross sctional area.
-
-		//Temp removed untill data collection system is online
-		//std::cout << "Enter the Length of the Material in (mm)" << std::endl;
-		//std::cin >> matLength;
-		//std::cout << "Enter the Width of the Material in (mm)" << std::endl;
-		//std::cin >> matWidth;
-		//std::cout << "Enter the Thickness of the Material in (mm)" << std::endl;
-		//std::cin >> matThickness;
+		std::cout << "Velocity of the Tester? (cm/s)" << std::endl;
+		std::cin >> velocityCM;
+		velPulse = cmToPulse(velocityCM);
 
 		std::cout << "How far would you like the Tester to pull in addition to the current displacement? (cm)" << std::endl;
 		std::cin >> distanceCM;
 		disPulse = cmToPulse(distanceCM);
 
-		std::cout << "Velocity of the Tester? (cm/s)" << std::endl;
-		std::cin >> velocityCM;
-		velPulse = cmToPulse(velocityCM);
-		maxSpeedCheck(velPulse);
-
-		std::cout << "Acceleration of the Tester? (cm/s)" << std::endl;
+		std::cout << "Acceleration of the Tester? (cm/s^2)" << std::endl;
 		std::cin >> accCM;
 		accPulse = cmToPulse(accCM);
 
+		checkAll(velPulse, disPulse, accPulse);
 
 		disString = std::to_string(disPulse);
 		velString = std::to_string(velPulse);
 		accString = std::to_string(accPulse);
 
-		std::cout << std::endl;
+		std::cout << "-----------------Test to Run-----------------" << std::endl;
 		std::cout << "Distance(Pulses): "<< disString << std::endl;
 		std::cout << "Velocity(Pulses/sec): "<< velString << std::endl;
 		std::cout << "Acceleration(Pulses/sec^2): "<< accString << std::endl;
+		std::cout << "---------------------------------------------" << std::endl;
 
 		if (abandonTest())
 		{
@@ -218,7 +209,13 @@ bool abandonTest()
 	}
 }
 
-int cmToPulse(float cm) 
+void showMaxSettings()
 {
-	return (cm * 1600 * (3));
+	std::cout << std::endl;
+	std::cout << "------------Tester's Max Settings------------"<< std::endl;
+	std::cout << "Max Speed:		" << pulseToCM(getMaxSpeed()) << " cm/sec" << std::endl;
+	std::cout << "Max Distance:		" << pulseToCM(getMaxDistance()) << " cm" << std::endl;
+	std::cout << "Max Acceleration:	" << pulseToCM(getMaxAcceleration()) << " cm/sec^2" << std::endl;
+	std::cout << "---------------------------------------------" << std::endl;
+	std::cout << std::endl;
 }

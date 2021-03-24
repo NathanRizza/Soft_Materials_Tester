@@ -16,6 +16,6 @@ void creepTest();
 void StressRelaxationTest();
 void runCustomTest(SerialPort controlArduino, SerialPort dataArduino);
 bool abandonTest();
-int cmToPulse(float cm);
+void showMaxSettings();
 
 #endif //TESTMENU

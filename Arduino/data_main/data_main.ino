@@ -8,9 +8,10 @@
 #include <Adafruit_ADS1015.h>
 Adafruit_ADS1115 ads1115;
 
-int16_t zero;
-int16_t results;
-
+int16_t zero =0;
+int16_t results=0;
+long sampleingSpeed = 20;
+String serialData ="temp";
 
     void setup(void)
     {
@@ -46,11 +47,50 @@ int16_t results;
         Serial.print('d');
         delay(5000);
       }
+      changeSampleSpeed();
     }
       
 void measureAndPrint()
 {
       results = ads1115.readADC_Differential_0_1(); \
       Serial.println(abs(results-zero));
+      return;
+}
+
+String readData()
+{
+  String info;
+  while(true)
+  {
+  if(Serial.available()>0)
+     {
+      delay(300);
+      info = Serial.readStringUntil('\n');
+      flushRead();
+      return info;
+     }
+  }
+      
+}
+
+void flushRead()
+{
+  char temp;
+  while(Serial.available()>0)
+  {
+    temp = Serial.read();
+  }
+  return;
+}
+
+void changeSampleSpeed()
+{
+      if(Serial.available()>0)
+      {
+      serialData = readData();
+      sampleingSpeed = atol(serialData.c_str());
+      Serial.println("r");
+      delay(500);
+      } 
       return;
 }

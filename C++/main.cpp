@@ -16,8 +16,10 @@ char* port2 = commport2;
 
 int main()
 {
+	std::cout << "Loading please wait..." << std::endl;
 	SerialPort controlArduino(port1); 
 	SerialPort dataArduino(port2);
+	readSettingsFromFile(dataArduino);
 	Sleep(1000);
 	if (isConnectedMenu(controlArduino)) 
 	{

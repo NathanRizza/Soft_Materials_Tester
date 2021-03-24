@@ -1,7 +1,6 @@
 #include "customTests.h"
 
 namespace fs = std::filesystem;
-int maxSpeed = 2500;
 
 void runCustomTest(SerialPort controlArduino,test customTest)
 {
@@ -290,11 +289,60 @@ void viewSpecificTest()
 
 void maxSpeedCheck(int& pulsePerSec) 
 {
-	if (pulsePerSec > maxSpeed) 
+	if (pulsePerSec > getMaxSpeed()) 
 	{
-		std::cout << "ERROR: Cannot have a speed greater than 0.52cm/cec (2500 pulses/sec)" << std::endl;
+		float speedFloat = getMaxSpeed();
+		std::cout << "ERROR: Cannot have a speed greater than: "<< pulseToCM(speedFloat)<<"cm/sec ("<< getMaxSpeed() <<" pulses/sec)" << std::endl;
 		std::cout << "Changing entered speed to the max speed." << std::endl;
-		pulsePerSec = 2500;
+		pulsePerSec = getMaxSpeed();
 	}
 	return;
 }
+
+void maxDistanceCheck(int& distance)
+{
+	if (distance > getMaxDistance())
+	{
+		float disFloat = getMaxDistance();
+		std::cout << "ERROR: Cannot have a distance greater than: " << pulseToCM(disFloat) << "cm (" << getMaxDistance() << " pulses)" << std::endl;
+		std::cout << "Changing entered speed to the max speed." << std::endl;
+		distance = getMaxDistance();
+	}
+	return;
+}
+
+void maxAccelerationCheck(int& acc)
+{
+	if (acc > getMaxAcceleration())
+	{
+		float accFloat = getMaxAcceleration();
+		std::cout << "ERROR: Cannot have an acceleration greater than: " << pulseToCM(accFloat) << "cm/sec^2 (" << getMaxAcceleration() << " pulses/sec^2)" << std::endl;
+		std::cout << "Changing entered speed to the max speed." << std::endl;
+		acc = getMaxAcceleration();
+	}
+	return;
+}
+
+void checkAll(int& pulsePerSec, int& distance, int& acc) 
+{
+	std::cout << std::endl;
+	maxSpeedCheck(pulsePerSec);
+	std::cout << std::endl;
+	maxDistanceCheck(distance);
+	std::cout << std::endl;
+	maxAccelerationCheck(acc);
+	std::cout << std::endl;
+}
+
+
+int cmToPulse(float cm)
+{
+	return (cm * 1600 * (3));
+}
+
+float pulseToCM(int pulse)
+{
+	float temp = pulse;
+	return ((truncf(((temp / 3.3333) / 1600) * 100)) / 100);
+}
+

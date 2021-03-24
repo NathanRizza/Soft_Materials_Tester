@@ -6,6 +6,7 @@
 #include "SerialPort.h"
 #include <string>
 #include <iostream>
+#include "testerSettings.h"
 
 
 void serialWrite(SerialPort arduino, std:: string data);

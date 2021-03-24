@@ -5,8 +5,8 @@
 #define USERMENU_H
 
 void mainMenu(SerialPort controlArduino, SerialPort dataArduino);
-void settings();
+void settings(SerialPort dataArduino);
 void help();
-//void dataOutput(int time[], int distance[], int force[]);
+void clearScreen();
 
 #endif//USERMENU_H

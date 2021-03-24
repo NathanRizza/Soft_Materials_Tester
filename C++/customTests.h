@@ -5,6 +5,7 @@
 #include <fstream>
 #include "a2pc.h"
 
+
 #ifndef CUSTOMTESTS_H
 #define CUSTOMTESTS_H
 
@@ -20,6 +21,10 @@ void printTestToScreen(test printTest);
 test readTestFromFile(std::string filename);
 void viewSpecificTest();
 void maxSpeedCheck(int& pulsePerSec);
-
+void maxDistanceCheck(int& distance);
+void maxAccelerationCheck(int& acc);
+void checkAll(int& pulsePerSec, int& distance,int& acc);
+int cmToPulse(float cm);
+float pulseToCM(int pulse);
 
 #endif //CUSTOMTESTS_H

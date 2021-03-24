@@ -1,12 +1,9 @@
 #include "dataGathering.h"
 
-int samplesPerSecond = 20; // Must also be changed in the arduino code.
-
 void getData(SerialPort dataArduino,std::string fileName)
 {
 	float time = 0;
 	float forceValue = 0;
-	float conversionFactor = 3.24; // make this changeable in settings
 	std::string data = "0";
 	std::ofstream outfile(fileName + ".csv"); //"/testData/"+ ?
 	outfile << "Time (sec)" << "," << "Force (N)" << "\n";
@@ -19,10 +16,10 @@ void getData(SerialPort dataArduino,std::string fileName)
 			break;
 		}
 		forceValue = std::stof(data);
-		forceValue = (forceValue / conversionFactor);
+		forceValue = (forceValue / getConversionFactor());
 		outfile << (truncf(time*10)/10) << ',' << forceValue << std::endl;
-		Sleep((1000 / samplesPerSecond)-1);
-		time = time+(1.0/samplesPerSecond);
+		Sleep((1000 / getSamplesPerSecond())-1);
+		time = time+(1.0/getSamplesPerSecond());
 	}
 	std::cout << "Data saved to file: " + fileName + ".csv " << std::endl;
 	return;
@@ -41,11 +38,6 @@ std::string getValidFileName()
 		std::cin >> fileName;
 	}
 	return fileName;
-}
-
-void writeData(std::ofstream outfile, float data) 
-{
-
 }
 
 void flushArduinos(SerialPort dataArduino, SerialPort controlArduino) 
