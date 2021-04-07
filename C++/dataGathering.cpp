@@ -1,3 +1,4 @@
+//Nathan Rizza
 #include "dataGathering.h"
 
 void getData(SerialPort dataArduino,std::string fileName)

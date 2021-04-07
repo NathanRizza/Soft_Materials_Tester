@@ -25,4 +25,8 @@ int main()
 	{
 		mainMenu(controlArduino,dataArduino);
 	}
+	else 
+	{
+		std::cout << "Problem establishing a connection." << std::endl;
+	}
 }

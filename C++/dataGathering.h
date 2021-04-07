@@ -1,3 +1,4 @@
+//Nathan Rizza
 #pragma once
 
 #ifndef DATAGATHERING_H
@@ -8,6 +9,7 @@
 #include "customTests.h"
 
 void getData(SerialPort dataArduino, std::string fileName);
+void getDistanceData(SerialPort dataArduino, std::string fileName); //NEED TO WRITE
 std::string getValidFileName();
 void writeData(std::ofstream outfile, float data);
 void flushArduinos(SerialPort dataArduino, SerialPort controlArduino);

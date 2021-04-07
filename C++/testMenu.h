@@ -1,4 +1,4 @@
-//you might be able to get all dependancies when including this header
+//Nathan Rizza
 #pragma once
 
 #include "customTests.h"//uses test and testStep

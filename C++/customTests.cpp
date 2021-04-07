@@ -1,3 +1,4 @@
+//Nathan Rizza
 #include "customTests.h"
 
 namespace fs = std::filesystem;
@@ -337,12 +338,12 @@ void checkAll(int& pulsePerSec, int& distance, int& acc)
 
 int cmToPulse(float cm)
 {
-	return (cm * 1600 * (3));
+	return (cm * 1600 * (4));
 }
 
 float pulseToCM(int pulse)
 {
 	float temp = pulse;
-	return ((truncf(((temp / 3.3333) / 1600) * 100)) / 100);
+	return ((truncf(((temp / 4) / 1600) * 100)) / 100);
 }
 

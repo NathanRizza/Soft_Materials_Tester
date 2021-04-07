@@ -1,3 +1,4 @@
+//Nathan Rizza
 #include "testMenu.h"
 
 void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
@@ -60,9 +61,6 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 
 void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 {
-	float matLength = 0;
-	float matWidth = 0;
-	float matThickness = 0;
 	float distanceCM = 0;
 	float velocityCM = 0;
 	float accCM = 0;
@@ -77,13 +75,14 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 
 		std::cout << "Tensile Test Menu:" << std::endl;
 
-		std::cout << "Velocity of the Tester? (cm/s)" << std::endl;
-		std::cin >> velocityCM;
-		velPulse = cmToPulse(velocityCM);
-
 		std::cout << "How far would you like the Tester to pull in addition to the current displacement? (cm)" << std::endl;
 		std::cin >> distanceCM;
 		disPulse = cmToPulse(distanceCM);
+
+
+		std::cout << "Velocity of the Tester? (cm/s)" << std::endl;
+		std::cin >> velocityCM;
+		velPulse = cmToPulse(velocityCM);
 
 		std::cout << "Acceleration of the Tester? (cm/s^2)" << std::endl;
 		std::cin >> accCM;
@@ -125,7 +124,55 @@ void compressionTest(){}
 
 void adhesionTest(){}
 
-void creepTest(){}
+void creepTest(SerialPort controlArduino, SerialPort dataArduino)
+{
+	float forceN = 0;
+	float velocityCM = 0;
+	float accCM = 0;
+	int disPulse = 0;
+	int velPulse = 0;
+	int accPulse = 0;
+	std::string forceString = "d";
+	std::string temp = "";
+	std::string fileName = "";
+
+	std::cout << "Creep Test Menu:" << std::endl;
+
+	std::cout << "Enter the constent force you would like exerted onto the sample in Newtons. (float)" << std::endl;
+	std::cin >> forceN;
+	
+	while (forceN > 95) 
+	{
+		std::cout << "\033[2J\033[1;1H";
+		std::cout << "Max force cannot be greater than 95N, please enter a smaller value." << std::endl;
+		std::cin >> forceN;
+	}
+
+	forceString = std::to_string(forceN);
+
+	if (abandonTest())
+	{
+		return;
+	}
+	std::cout << "\033[2J\033[1;1H";
+
+	fileName = getValidFileName();
+	std::cout << "Sending test to arduino, please wait..." << std::endl;
+	serialWrite(controlArduino, "c");
+	serialWrite(dataArduino, "c");
+	serialWrite(dataArduino, forceString); //In this experiment Data is collected from the control arduino
+	std::cout << "Test Sent!" << std::endl; //Make sure test is sent and varified recived by each by this time. 
+	Sleep(100);
+	temp = serialRead(controlArduino);
+	temp = serialRead(dataArduino);
+
+	//Start the datagathering only after the sample has reached the force so that time can be kept by the computer.
+	getDistanceData(controlArduino, fileName); //Write in dataGathering.h
+	//Data Format
+	//Starts collection when sample reaches desired force  
+	return;
+
+}
 
 void StressRelaxationTest(){}
 

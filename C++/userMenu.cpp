@@ -1,3 +1,4 @@
+//Nathan Rizza
 #include "userMenu.h"
 
 void mainMenu(SerialPort controlArduino, SerialPort dataArduino)
@@ -8,7 +9,7 @@ void mainMenu(SerialPort controlArduino, SerialPort dataArduino)
 		std::cout << "Enter the number of the action you want to take then press the ENTER Key:" << std::endl;
 		std::cout << "(1): Run Test" << std::endl;
 		std::cout << "(2): Make Custom Test" << std::endl;
-		std::cout << "(3): Manage Custom Tests" << std::endl; //add more stuff here
+		std::cout << "(3): Manage Custom Tests" << std::endl; 
 		std::cout << "(4): Settigns" << std::endl;
 		std::cout << "(5): Help" << std::endl;
 		std::cout << "(0): End Program" << std::endl;
