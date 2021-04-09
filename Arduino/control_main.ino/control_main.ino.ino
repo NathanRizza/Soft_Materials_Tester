@@ -21,7 +21,9 @@ void setup()
    stepper.setAcceleration(10000);
    stepper.runToNewPosition(-100);
    stepper.runToNewPosition(0);
-   pinMode(10, OUTPUT); //commuincation channel between control and data arduino. - 10
+   pinMode(10, OUTPUT); //Sends signals to data arduino to start force data collection
+   pinMode(9, OUTPUT); // Sends signals data arduino to start creep test
+   pinMode(8, INPUT); // Recives signals from data arduino to keep creep test on track
 }
 
 void loop()
@@ -39,17 +41,17 @@ void menu(void)
 
 void testMenu(String testID)
 {
-  if(testID == "t")
+  if(testID == "t") //Tensile/Compression/AdhesionTest
   {
     tensileSetup();
   }
-  else if(testID == "c")
+  else if(testID == "c")//Custom Test
   {
     customTestSetup();
   }
-  else if(testID =="r")
+  else if(testID =="r")//Screep Test
   {
-
+    creepTestSetup();
   }
   else if(testID =="n")
   {
@@ -133,6 +135,25 @@ void customTestSetup()
     return;
 }
 
+void creepTestSetup()
+{
+    Serial.println('c');
+    long testTime = readData(); //in mins
+    digitalWrite(9,HIGH);
+    delay(100);
+    Serial.println('b');
+    delay(1000);
+    creepTest(testTime);
+    digitalWrite(9,LOW);
+
+    //IDK what to do after the above
+    delay(500);
+    Serial.println("d");
+    
+    return;
+}
+
+
 void runStep(long distance, long velocity, long acceleration)
 {
   if(velocity>maxSneed)
@@ -156,6 +177,11 @@ void tesnsileTest(long disInt,long velInt,long accInt)
     return;  
 }
 
+void creepTest(int testTime)
+{
+  
+}
+
 String readData()
 {
   String info;
@@ -168,8 +194,7 @@ String readData()
       flushRead();
       return info;
      }
-  }
-      
+  } 
 }
 
 void flushRead()
