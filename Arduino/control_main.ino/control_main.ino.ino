@@ -176,16 +176,18 @@ void tesnsileTest(long disInt,long velInt,long accInt)
 
 void creepTest(int testTime, int maxDistance)
 {
+  int currentDistance = 0;
   while()//TIME < TestTime && Position < max distance
   {
       if(digitalRead(8)==HIGH)
       {
           while(digitalRead(8)==HIGH)
           { 
-            
-            //runStep
+            stepper.moveTo(currentDistance+1);
+            stepper.run();
+            currentDistance = currentDistance + 1;
           }
-          Serial.println();//Print Position
+          Serial.println(currentDistance);//Print Position
       }
   }
 }
