@@ -145,11 +145,8 @@ void creepTestSetup()
     delay(1000);
     creepTest(testTime);
     digitalWrite(9,LOW);
-
-    //IDK what to do after the above
     delay(500);
     Serial.println("d");
-    
     return;
 }
 
@@ -177,9 +174,20 @@ void tesnsileTest(long disInt,long velInt,long accInt)
     return;  
 }
 
-void creepTest(int testTime)
+void creepTest(int testTime, int maxDistance)
 {
-  
+  while()//TIME < TestTime && Position < max distance
+  {
+      if(digitalRead(8)==HIGH)
+      {
+          while(digitalRead(8)==HIGH)
+          { 
+            
+            //runStep
+          }
+          Serial.println();//Print Position
+      }
+  }
 }
 
 String readData()

@@ -103,9 +103,23 @@ void changeSampleSpeed()
 
 void creepTest()
 {
- String desiredForce = readData();
+ String desiredForceString = readData();
+  Serial.println('c');
+ String conversionFactorString = readData();
+ float desiredForce = desiredForceString.toFloat();
+ float conversionFactor = conversionFactorString.toFloat();
  Serial.println('b');
  zero = ads1115.readADC_Differential_0_1(); 
  //Begin reading in the force data and set the move to high.
- 
+ while(digitalRead(9)==HIGH)
+ {
+    if((ads1115.readADC_Differential_0_1()*9.81*conversionFactor)< desiredForce)
+    {
+      digitalWrite(8,HIGH);
+    }
+    else
+    {
+     digitalWrite(8,LOW);
+    }
+ }
 }
