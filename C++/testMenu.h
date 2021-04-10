@@ -12,7 +12,7 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino);
 void tensileTest(SerialPort controlArduino, SerialPort dataArduino);
 void compressionTest();
 void adhesionTest();
-void creepTest();
+void creepTest(SerialPort controlArduino, SerialPort dataArduino);
 void StressRelaxationTest();
 void runCustomTest(SerialPort controlArduino, SerialPort dataArduino);
 bool abandonTest();

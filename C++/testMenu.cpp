@@ -38,7 +38,7 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 		}
 		else if (userInput == "4")
 		{
-			creepTest();
+			creepTest(controlArduino, dataArduino);
 		}
 		else if (userInput == "5")
 		{
@@ -127,12 +127,9 @@ void adhesionTest(){}
 void creepTest(SerialPort controlArduino, SerialPort dataArduino)
 {
 	float forceN = 0;
-	float velocityCM = 0;
-	float accCM = 0;
-	int disPulse = 0;
-	int velPulse = 0;
-	int accPulse = 0;
+	int testTimeInt = 0;
 	std::string forceString = "d";
+	std::string testTime = "0";
 	std::string temp = "";
 	std::string fileName = "";
 
@@ -148,6 +145,10 @@ void creepTest(SerialPort controlArduino, SerialPort dataArduino)
 		std::cin >> forceN;
 	}
 
+	std::cout << "Enter the time you would like the sample to undergo the constant force in minutes. (int)" << std::endl;
+	std::cin >> testTimeInt;
+	testTime = std::to_string(testTimeInt);
+
 	forceString = std::to_string(forceN);
 
 	if (abandonTest())
@@ -158,18 +159,15 @@ void creepTest(SerialPort controlArduino, SerialPort dataArduino)
 
 	fileName = getValidFileName();
 	std::cout << "Sending test to arduino, please wait..." << std::endl;
-	serialWrite(controlArduino, "c");
-	serialWrite(dataArduino, "c");
+	serialWrite(controlArduino, "r");
+	serialWrite(controlArduino, testTime);
 	serialWrite(dataArduino, forceString); //In this experiment Data is collected from the control arduino
-	std::cout << "Test Sent!" << std::endl; //Make sure test is sent and varified recived by each by this time. 
+	serialWrite(dataArduino, std::to_string(getConversionFactor()));
+	std::cout << "Test Sent!" << std::endl; 
 	Sleep(100);
 	temp = serialRead(controlArduino);
 	temp = serialRead(dataArduino);
-
-	//Start the datagathering only after the sample has reached the force so that time can be kept by the computer.
-	getDistanceData(controlArduino, fileName); //Write in dataGathering.h
-	//Data Format
-	//Starts collection when sample reaches desired force  
+	getCreepTestData(controlArduino,fileName);
 	return;
 
 }

@@ -25,6 +25,17 @@ std::string serialRead(SerialPort arduino)
 	return outputString;
 }
 
+std::string serialReadUntillAvailable(SerialPort arduino)//Might be useful for other tests
+{
+	std::string outputString = "0";
+	while (outputString == "0") 
+	{
+		arduino.readSerialPort(output, MAX_DATA_LENGTH);
+		outputString = output;
+	}
+	return outputString;
+}
+
 bool isConnectedMenu(SerialPort arduino)
 {
 	if (arduino.isConnected()) //Pretend that we have a connection

@@ -26,6 +26,27 @@ void getData(SerialPort dataArduino,std::string fileName)
 	return;
 }
 
+void getCreepTestData(SerialPort controlArduino, std::string fileName) 
+{
+	float time = 0;
+	float distancePulses = 0;
+	std::string data = "0";
+	std::ofstream outfile(fileName + ".csv"); //"/testData/"+ ?
+	flushArduinos(controlArduino);
+	while (true)
+	{
+		data = serialReadUntillAvailable(controlArduino);
+		if (data.find('d') != std::string::npos)
+		{
+			break;
+		}
+		distancePulses = std::stof(data);
+		outfile << time << ',' << pulseToCM(distancePulses) << std::endl; //MAKE TIME WORK
+	}
+	std::cout << "Data saved to file: " + fileName + ".csv " << std::endl;
+	return;
+}
+
 std::string getValidFileName()
 {
 	std::string fileName = "";
