@@ -184,8 +184,10 @@ void creepTest(int testTime, int maxDistance)
           while(digitalRead(8)==HIGH)
           { 
             stepper.moveTo(currentDistance+1);
-            stepper.run();
+            if(stepper.run())
+            {
             currentDistance = currentDistance + 1;
+            }
           }
           Serial.println(currentDistance);//Print Position
       }

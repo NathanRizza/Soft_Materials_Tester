@@ -1,13 +1,14 @@
 //Nathan Rizza
 #include "dataGathering.h"
 
-void getData(SerialPort dataArduino,std::string fileName)
+void getData(SerialPort dataArduino,std::string fileName, int velPulse, int accPulse)
 {
 	float time = 0;
 	float forceValue = 0;
 	std::string data = "0";
 	std::ofstream outfile(fileName + ".csv"); //"/testData/"+ ?
-	outfile << "Time (sec)" << "," << "Force (N)" << "\n";
+	std::cout << "Data Collection has started" << std::endl;
+	outfile << "Time (sec)" << "," << "Force (N)" << "," <<"Distance (CM)"<< "\n";
 	flushArduinos(dataArduino);
 	while (true)
 	{
@@ -18,7 +19,8 @@ void getData(SerialPort dataArduino,std::string fileName)
 		}
 		forceValue = std::stof(data);
 		forceValue = (forceValue / getConversionFactor());
-		outfile << (truncf(time*10)/10) << ',' << forceValue << std::endl;
+		
+		outfile << (truncf(time*10)/10) << ',' << forceValue << ',' << calcPosition(time,velPulse,accPulse) << std::endl;
 		Sleep((1000 / getSamplesPerSecond())-1);
 		time = time+(1.0/getSamplesPerSecond());
 	}
@@ -75,4 +77,30 @@ void flushArduinos(SerialPort dataArduino)
 	std::string temp = "";
 	Sleep(100);
 	temp = serialRead(dataArduino);
+}
+
+float calcPosition(float time, int velPulse, int accPulse) 
+{
+	float velPulseFloat = velPulse;
+	float accPulseFloat = accPulse;
+	float disPulse = 0;
+	float firstLegTime = 0;
+	if (accPulse > 0) 
+	{
+		if ((accPulseFloat * time) < velPulse) 
+		{
+			disPulse = 0.5 * accPulseFloat * time * time;
+		}
+		else 
+		{
+			firstLegTime = accPulseFloat / velPulseFloat;
+			disPulse = 0.5 * accPulseFloat * firstLegTime * firstLegTime;
+			disPulse = disPulse + (velPulseFloat*(time-firstLegTime));
+		}
+	}
+	else 
+	{
+		disPulse = velPulseFloat * time;
+	}
+	return pulseToCM(disPulse);
 }

@@ -30,11 +30,13 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 		}
 		else if (userInput == "2")
 		{
-			compressionTest();
+			showMaxSettings();
+			tensileTest(controlArduino, dataArduino);
 		}
 		else if (userInput == "3")
 		{
-			adhesionTest();
+			showMaxSettings();
+			tensileTest(controlArduino, dataArduino);
 		}
 		else if (userInput == "4")
 		{
@@ -116,7 +118,7 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 	Sleep(100);
 	temp = serialRead(controlArduino);
 	temp = serialRead(dataArduino);
-	getData(dataArduino,fileName);
+	getData(dataArduino, fileName, velPulse, accPulse);
 	return;
 }
 
@@ -222,7 +224,7 @@ void runCustomTest(SerialPort controlArduino, SerialPort dataArduino)
 	csvFileName = getValidFileName();
 
 	runCustomTest(controlArduino, customTest);
-	getData(dataArduino,csvFileName);
+	//getData(dataArduino,csvFileName); NEED TO FIX SINCE NEW GET DATA HAS DISTANCE
 	return;
 }
 
