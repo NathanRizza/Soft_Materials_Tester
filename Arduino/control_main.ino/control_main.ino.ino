@@ -138,12 +138,13 @@ void customTestSetup()
 void creepTestSetup()
 {
     Serial.println('c');
-    long testTime = readData(); //in mins
+    String testTimeString = readData(); //in mins
+    long testTime =atol(testTimeString.c_str());
     digitalWrite(9,HIGH);
     delay(100);
     Serial.println('b');
     delay(1000);
-    creepTest(testTime);
+    creepTest(testTime, 10000); //Max distance temp
     digitalWrite(9,LOW);
     delay(500);
     Serial.println("d");
@@ -174,10 +175,12 @@ void tesnsileTest(long disInt,long velInt,long accInt)
     return;  
 }
 
-void creepTest(int testTime, int maxDistance)
+void creepTest(long testTime, int maxDistance)
 {
   int currentDistance = 0;
-  while()//TIME < TestTime && Position < max distance
+  long startTime = millis();
+  long testTimeMil = testTime *60*1000;
+  while(millis<testTime && currentDistance < maxDistance)
   {
       if(digitalRead(8)==HIGH)
       {
