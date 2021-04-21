@@ -26,34 +26,41 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 		else if (userInput == "1")
 		{
 			showMaxSettings();
+			std::cout << "Tensile Test Menu:" << std::endl;
 			tensileTest(controlArduino, dataArduino);
 		}
 		else if (userInput == "2")
 		{
 			showMaxSettings();
+			std::cout << "Compression Test Menu:" << std::endl;
 			tensileTest(controlArduino, dataArduino);
 		}
 		else if (userInput == "3")
 		{
 			showMaxSettings();
+			std::cout << "Adhesion Test Menu:" << std::endl;
 			tensileTest(controlArduino, dataArduino);
 		}
 		else if (userInput == "4")
 		{
+			std::cout << "Creep Test Menu:" << std::endl;
 			creepTest(controlArduino, dataArduino);
 		}
 		else if (userInput == "5")
 		{
+			std::cout << "Stress Relaxation Test Menu:" << std::endl;
 			StressRelaxationTest();
 		}
 		else if (userInput == "6")
 		{
+			std::cout << "Custom Test Menu:" << std::endl;
 			runCustomTest(controlArduino,dataArduino);
 		}
 		else
 		{
 			std::cout << "Invalid input try again." << std::endl;
 		}
+
 		flushArduinos(dataArduino, controlArduino);
 		system("pause");
 		std::cout << "\033[2J\033[1;1H";
@@ -75,9 +82,7 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 	std::string temp = "";
 	std::string fileName = "";
 
-		std::cout << "Tensile Test Menu:" << std::endl;
-
-		std::cout << "How far would you like the Tester to pull in addition to the current displacement? (cm)" << std::endl;
+		std::cout << "Displacement of Tester? (cm) (\"+\"= Up,\"-\"=Down)" << std::endl;
 		std::cin >> distanceCM;
 		disPulse = cmToPulse(distanceCM);
 
@@ -89,6 +94,15 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 		std::cout << "Acceleration of the Tester? (cm/s^2)" << std::endl;
 		std::cin >> accCM;
 		accPulse = cmToPulse(accCM);
+		
+		if (velPulse < 0)
+		{
+			velPulse = velPulse * -1;
+		}
+		if (accPulse < 0)
+		{
+			accPulse = accPulse * -1;
+		}
 
 		checkAll(velPulse, disPulse, accPulse);
 
@@ -134,8 +148,6 @@ void creepTest(SerialPort controlArduino, SerialPort dataArduino)
 	std::string testTime = "0";
 	std::string temp = "";
 	std::string fileName = "";
-
-	std::cout << "Creep Test Menu:" << std::endl;
 
 	std::cout << "Enter the constent force you would like exerted onto the sample in Newtons. (float)" << std::endl;
 	std::cin >> forceN;
@@ -224,7 +236,8 @@ void runCustomTest(SerialPort controlArduino, SerialPort dataArduino)
 	csvFileName = getValidFileName();
 
 	runCustomTest(controlArduino, customTest);
-	//getData(dataArduino,csvFileName); NEED TO FIX SINCE NEW GET DATA HAS DISTANCE
+	getDataNoDistance(dataArduino,csvFileName);
+
 	return;
 }
 

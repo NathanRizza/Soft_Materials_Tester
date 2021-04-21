@@ -28,6 +28,33 @@ void getData(SerialPort dataArduino,std::string fileName, int velPulse, int accP
 	return;
 }
 
+void getDataNoDistance(SerialPort dataArduino, std::string fileName)
+{
+	float time = 0;
+	float forceValue = 0;
+	std::string data = "0";
+	std::ofstream outfile(fileName + ".csv"); //"/testData/"+ ?
+	std::cout << "Data Collection has started" << std::endl;
+	outfile << "Time (sec)" << "," << "Force (N)" << "\n";
+	flushArduinos(dataArduino);
+	while (true)
+	{
+		data = serialRead(dataArduino);
+		if (data.find('d') != std::string::npos)
+		{
+			break;
+		}
+		forceValue = std::stof(data);
+		forceValue = (forceValue / getConversionFactor());
+
+		outfile << (truncf(time * 10) / 10) << ',' << forceValue << std::endl;
+		Sleep((1000 / getSamplesPerSecond()) - 1);
+		time = time + (1.0 / getSamplesPerSecond());
+	}
+	std::cout << "Data saved to file: " + fileName + ".csv " << std::endl;
+	return;
+}
+
 void getCreepTestData(SerialPort controlArduino, std::string fileName) 
 {
 	float time = 0;
