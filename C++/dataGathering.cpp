@@ -21,7 +21,7 @@ void getData(SerialPort dataArduino,std::string fileName, int velPulse, int accP
 		forceValue = (forceValue / getConversionFactor());
 		
 		outfile << (truncf(time*10)/10) << ',' << forceValue << ',' << calcPosition(time,velPulse,accPulse) << std::endl;
-		Sleep((1000 / getSamplesPerSecond())-1);
+		Sleep((978 / getSamplesPerSecond())-1);
 		time = time+(1.0/getSamplesPerSecond());
 	}
 	std::cout << "Data saved to file: " + fileName + ".csv " << std::endl;

@@ -122,8 +122,8 @@ void setdefaultSettings(SerialPort dataArduino)
 
 void showSettings() 
 {
-	std::cout << "Max Speed:		 "<< maxSpeed << " Pulses/sec" <<std::endl;
 	std::cout << "Max Distance:		 "<< maxDistance << " Pulses" <<std::endl;
+	std::cout << "Max Speed:		 " << maxSpeed << " Pulses/sec" << std::endl;
 	std::cout << "Max Acceleration:	 "<< maxAcceleration << " Pulses/sec^2"<<std::endl;
 	std::cout << "Sample rate:		 "<< samplesPerSecond << " Samples / Second"<< std::endl;
 	std::cout << "Conversion Factor:	 " << conversionFactor << std::endl;

@@ -273,8 +273,8 @@ void showMaxSettings()
 {
 	std::cout << std::endl;
 	std::cout << "------------Tester's Max Settings------------"<< std::endl;
-	std::cout << "Max Speed:		" << pulseToCM(getMaxSpeed()) << " cm/sec" << std::endl;
 	std::cout << "Max Distance:		" << pulseToCM(getMaxDistance()) << " cm" << std::endl;
+	std::cout << "Max Speed:		" << pulseToCM(getMaxSpeed()) << " cm/sec" << std::endl;
 	std::cout << "Max Acceleration:	" << pulseToCM(getMaxAcceleration()) << " cm/sec^2" << std::endl;
 	std::cout << "---------------------------------------------" << std::endl;
 	std::cout << std::endl;
