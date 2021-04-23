@@ -15,6 +15,7 @@ int maxSneed = 2500;
 void setup()
 { 
    Serial.begin(256000);
+   //Serial.begin(9600);
    stepper.setMaxSpeed(maxSneed);
    stepper.setSpeed(maxSneed);
    
@@ -49,9 +50,13 @@ void testMenu(String testID)
   {
     customTestSetup();
   }
-  else if(testID =="r")//Screep Test
+  else if(testID =="p")//creep Test
   {
     creepTestSetup();
+  }
+  else if(testID =="r")//Stress Relaxation Test
+  {
+    stressRelaxTestSetup();
   }
   else if(testID =="n")
   {
@@ -95,6 +100,60 @@ void tensileSetup()
     
     return;
 }
+
+stressRelaxTestSetup()
+{  
+    String distance = "d";
+    String velocity = "v";
+    String acceleration = "a";
+    String timeString = "t";
+    long disLong =0;
+    long velLong = 0;
+    long accLong =0;
+    long timeLong = 0;
+    
+    Serial.println('c');
+    distance = readData();
+    Serial.println('c');
+    velocity = readData();
+    Serial.println('c');
+    acceleration = readData();
+    Serial.println('c');
+    timeString = readData();
+    
+    //convert Strings to ints
+        
+    disLong = atol(distance.c_str());
+    velLong = atol(velocity.c_str());
+    accLong = atol(acceleration.c_str());
+    timeLong =atol(timeString.c_str());
+    
+    Serial.println('b');
+    delay(500);
+    digitalWrite(10,HIGH);
+    delay(1000);
+    stressRelaxTest(disLong,velLong,accLong,timeLong);
+    digitalWrite(10,LOW);
+    delay(500);
+    Serial.println("d");
+    
+    return; 
+}
+
+ stressRelaxTest(disLong,velLong,accLong,timeLong)
+ {
+    runStep(disInt,velInt,accInt);
+    long startTime = millis();
+    long curTime = millis()-startTime;
+    long testTime = timeLong *60*1000;
+    while(testTime > curTime)
+    {
+     curTime = millis()-startTime;
+    }
+    return;
+ }
+
+
 
 void customTestSetup()
 {
@@ -142,12 +201,12 @@ void creepTestSetup()
     long testTime =atol(testTimeString.c_str());
     digitalWrite(9,HIGH);
     delay(100);
-    Serial.println('b');
+    //Serial.println('b');
     delay(1000);
-    creepTest(testTime, 10000); //Max distance temp
+    creepTest(testTime);
     digitalWrite(9,LOW);
     delay(500);
-    Serial.println("d");
+    Serial.print("d");
     return;
 }
 
@@ -169,18 +228,20 @@ void runStep(long distance, long velocity, long acceleration)
   return;
 }
 
-void tesnsileTest(long disInt,long velInt,long accInt)
+void tesnsileTest(long disLong,long velLong,long accLong)
 {
-    runStep(disInt,velInt,accInt);
+    runStep(disLong,velLong,accLong);
     return;  
 }
 
-void creepTest(long testTime, int maxDistance)
+void creepTest(long testTime)
 {
-  int currentDistance = 0;
+  long currentDistance = 0;
+  long maxCreepDis = 100000;
   long startTime = millis();
+  long curTime = millis()-startTime;
   long testTimeMil = testTime *60*1000;
-  while(millis<testTime && currentDistance < maxDistance)
+  while((curTime < testTimeMil) && (currentDistance < maxCreepDis))
   {
       if(digitalRead(8)==HIGH)
       {
