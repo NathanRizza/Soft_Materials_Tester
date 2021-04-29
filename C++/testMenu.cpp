@@ -44,17 +44,20 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 		else if (userInput == "4")
 		{
 			std::cout << "Creep Test Menu:" << std::endl;
-			creepTest(controlArduino, dataArduino);
+			//creepTest(controlArduino, dataArduino);
+			std::cout << "The Creep Test is unavailable at this time." << std::endl;
 		}
 		else if (userInput == "5")
 		{
 			std::cout << "Stress Relaxation Test Menu:" << std::endl;
-			StressRelaxationTest();
+			//StressRelaxationTest(controlArduino, dataArduino);
+			std::cout << "The Stress Relaxation Test is unavailable at this time." << std::endl;
 		}
 		else if (userInput == "6")
 		{
 			std::cout << "Custom Test Menu:" << std::endl;
 			runCustomTest(controlArduino,dataArduino);
+			std::cout << "The Custom Test is unavailable at this time." << std::endl;
 		}
 		else
 		{
@@ -91,9 +94,7 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 		std::cin >> velocityCM;
 		velPulse = cmToPulse(velocityCM);
 
-		std::cout << "Acceleration of the Tester? (cm/s^2)" << std::endl;
-		std::cin >> accCM;
-		accPulse = cmToPulse(accCM);
+		accPulse = getMaxAcceleration();
 		
 		if (velPulse < 0)
 		{
@@ -113,7 +114,7 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 		std::cout << "-----------------Test to Run-----------------" << std::endl;
 		std::cout << "Distance(Pulses): "<< disString << std::endl;
 		std::cout << "Velocity(Pulses/sec): "<< velString << std::endl;
-		std::cout << "Acceleration(Pulses/sec^2): "<< accString << std::endl;
+		//std::cout << "Acceleration(Pulses/sec^2): "<< accString << std::endl;
 		std::cout << "---------------------------------------------" << std::endl;
 
 		if (abandonTest())
@@ -173,7 +174,7 @@ void creepTest(SerialPort controlArduino, SerialPort dataArduino)
 
 	fileName = getValidFileName();
 	std::cout << "Sending test to arduino, please wait..." << std::endl;
-	serialWrite(controlArduino, "r");
+	serialWrite(controlArduino, "p");
 	serialWrite(controlArduino, testTime);
 	serialWrite(dataArduino, forceString); //In this experiment Data is collected from the control arduino
 	serialWrite(dataArduino, std::to_string(getConversionFactor()));
@@ -186,7 +187,86 @@ void creepTest(SerialPort controlArduino, SerialPort dataArduino)
 
 }
 
-void StressRelaxationTest(){}
+void StressRelaxationTest(SerialPort controlArduino, SerialPort dataArduino)
+{
+
+	float distanceCM = 0;
+	float velocityCM = 0;
+	float accCM = 0;
+	int disPulse = 0;
+	int velPulse = 0;
+	int accPulse = 0;
+	int testTimeInt = 0;
+	std::string disString = "d";
+	std::string velString = "v";
+	std::string accString = "a";
+	std::string timeString = "t";
+	std::string temp = "";
+	std::string fileName = "";
+
+	std::cout << "Displacement of Tester? (cm) (\"+\"= Up,\"-\"=Down)" << std::endl;
+	std::cin >> distanceCM;
+	disPulse = cmToPulse(distanceCM);
+
+
+	std::cout << "Velocity of the Tester? (cm/s)" << std::endl;
+	std::cin >> velocityCM;
+	velPulse = cmToPulse(velocityCM);
+
+	std::cout << "Acceleration of the Tester? (cm/s^2)" << std::endl;
+	std::cin >> accCM;
+	accPulse = cmToPulse(accCM);
+
+	std::cout << "Enter the time you would like the sample to undergo the constant force in minutes. (int)" << std::endl;
+	std::cin >> testTimeInt;
+
+	if (velPulse < 0)
+	{
+		velPulse = velPulse * -1;
+	}
+	if (accPulse < 0)
+	{
+		accPulse = accPulse * -1;
+	}
+	if (testTimeInt < 0)
+	{
+		testTimeInt = testTimeInt * -1;
+	}
+
+	checkAll(velPulse, disPulse, accPulse);
+
+	disString = std::to_string(disPulse);
+	velString = std::to_string(velPulse);
+	accString = std::to_string(accPulse);
+	timeString = std::to_string(testTimeInt);
+
+	std::cout << "-----------------Test to Run-----------------" << std::endl;
+	std::cout << "Distance(Pulses): " << disString << std::endl;
+	std::cout << "Velocity(Pulses/sec): " << velString << std::endl;
+	std::cout << "Acceleration(Pulses/sec^2): " << accString << std::endl;
+	std::cout << "Test Time(sec): " << timeString << std::endl;
+	std::cout << "---------------------------------------------" << std::endl;
+
+	if (abandonTest())
+	{
+		return;
+	}
+	std::cout << "\033[2J\033[1;1H";
+
+	fileName = getValidFileName();
+	std::cout << "Sending test to arduino, please wait..." << std::endl;
+	serialWrite(controlArduino, "r");
+	serialWrite(controlArduino, disString);
+	serialWrite(controlArduino, velString);
+	serialWrite(controlArduino, accString);
+	serialWrite(controlArduino, timeString);
+	std::cout << "Test Sent!" << std::endl;
+	Sleep(100);
+	temp = serialRead(controlArduino);
+	temp = serialRead(dataArduino);
+	getDataStressRelax(dataArduino, fileName,velPulse,accPulse,disPulse);
+	return;
+}
 
 void runCustomTest(SerialPort controlArduino, SerialPort dataArduino)
 {

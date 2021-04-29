@@ -1,11 +1,11 @@
 //Nathan Rizza
 #include "testerSettings.h"
 
-int maxSpeed = 1;
-int maxDistance = 1;
-int maxAcceleration = 1;
-int samplesPerSecond = 1;
-float conversionFactor = 3.24;
+int maxSpeed = 2500;
+int maxDistance = 100000;
+int maxAcceleration = 0;
+int samplesPerSecond = 20;
+float conversionFactor = 1.886; 
 
 void setMaxSpeed() 
 {
@@ -18,7 +18,7 @@ void setMaxSpeed()
 }
 void setMaxDistance() 
 {
-	int setDistance = 180000;
+	int setDistance = 100000;
 	std::cout << "Enter the new Max Distance of the Tester. Default: 180000 pulses  (int only)" << std::endl;
 	std::cin >> setDistance;
 	maxDistance = setDistance;
@@ -27,8 +27,8 @@ void setMaxDistance()
 }
 void setMaxAcceleration() 
 {
-	int setAcceleration = 10000;
-	std::cout << "Enter the new Max Acceleration of the Tester. Default: 10000 pulses (int only)" << std::endl;
+	int setAcceleration = 0;
+	std::cout << "Enter the new Acceleration of the Tester. Default: 10000 pulses (int only)" << std::endl;
 	std::cin >> setAcceleration;
 	maxAcceleration = setAcceleration;
 	return;
@@ -48,8 +48,8 @@ void setSamplesPerSecond(SerialPort dataArduino)
 
 void setConversionFactor() 
 {
-	float setConversionFactor = 3.24;
-	std::cout << "Enter the new sampleing speed of the Tester. Defualt: 3.24 (float)" << std::endl;
+	float setConversionFactor = 1.886;
+	std::cout << "Enter the new sampleing speed of the Tester. Defualt: "<< conversionFactor <<"(float)" << std::endl;
 	std::cin >> setConversionFactor;
 	samplesPerSecond = setConversionFactor;
 	return;
@@ -110,10 +110,10 @@ void writeSettingsToFile()
 void setdefaultSettings(SerialPort dataArduino) 
 {
 	maxSpeed = 2500;
-	maxDistance = 180000;
-	maxAcceleration = 10000;
+	maxDistance = 100000;
+	maxAcceleration = 0;
 	samplesPerSecond = 20;
-	conversionFactor = 3.24;
+	conversionFactor = 1.886;
 	serialWrite(dataArduino, std::to_string(samplesPerSecond));
 	std::cout << "Default settings saved successfully!" << std::endl;
 	showSettings();
@@ -124,7 +124,7 @@ void showSettings()
 {
 	std::cout << "Max Distance:		 "<< maxDistance << " Pulses" <<std::endl;
 	std::cout << "Max Speed:		 " << maxSpeed << " Pulses/sec" << std::endl;
-	std::cout << "Max Acceleration:	 "<< maxAcceleration << " Pulses/sec^2"<<std::endl;
+	std::cout << "Acceleration:		"<< maxAcceleration << " Pulses/sec^2"<<std::endl;
 	std::cout << "Sample rate:		 "<< samplesPerSecond << " Samples / Second"<< std::endl;
 	std::cout << "Conversion Factor:	 " << conversionFactor << std::endl;
 	return;

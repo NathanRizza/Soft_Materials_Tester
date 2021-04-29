@@ -24,12 +24,31 @@ void setup()
    stepper.runToNewPosition(0);
    pinMode(10, OUTPUT); //Sends signals to data arduino to start force data collection
    pinMode(9, OUTPUT); // Sends signals data arduino to start creep test
-   pinMode(8, INPUT); // Recives signals from data arduino to keep creep test on track
+   pinMode(7, INPUT_PULLUP); // Receives single to move up from the movement switch.
+   pinMode(6, INPUT_PULLUP); // Receives single to move down from the movement switch.
+   pinMode(5,OUTPUT); // Power for switch
+   pinMode(3,OUTPUT); // Low mode for switch
+   pinMode(2,OUTPUT); // Low mode for switch
+   digitalWrite(5, HIGH);
+   digitalWrite(3, LOW);
+   digitalWrite(2, LOW);
 }
 
 void loop()
 { 
+  
+  if(Serial.available())
+  {  
     menu();
+  }
+  if(digitalRead(7)==HIGH)
+  {
+    moveUp();  
+  }
+  if(digitalRead(6)==HIGH)
+  {
+    moveDown();  
+  }
 }
 
 void menu(void)
@@ -56,7 +75,6 @@ void testMenu(String testID)
   }
   else if(testID =="r")//Stress Relaxation Test
   {
-    stressRelaxTestSetup();
   }
   else if(testID =="n")
   {
@@ -100,59 +118,6 @@ void tensileSetup()
     
     return;
 }
-
-stressRelaxTestSetup()
-{  
-    String distance = "d";
-    String velocity = "v";
-    String acceleration = "a";
-    String timeString = "t";
-    long disLong =0;
-    long velLong = 0;
-    long accLong =0;
-    long timeLong = 0;
-    
-    Serial.println('c');
-    distance = readData();
-    Serial.println('c');
-    velocity = readData();
-    Serial.println('c');
-    acceleration = readData();
-    Serial.println('c');
-    timeString = readData();
-    
-    //convert Strings to ints
-        
-    disLong = atol(distance.c_str());
-    velLong = atol(velocity.c_str());
-    accLong = atol(acceleration.c_str());
-    timeLong =atol(timeString.c_str());
-    
-    Serial.println('b');
-    delay(500);
-    digitalWrite(10,HIGH);
-    delay(1000);
-    stressRelaxTest(disLong,velLong,accLong,timeLong);
-    digitalWrite(10,LOW);
-    delay(500);
-    Serial.println("d");
-    
-    return; 
-}
-
- stressRelaxTest(disLong,velLong,accLong,timeLong)
- {
-    runStep(disInt,velInt,accInt);
-    long startTime = millis();
-    long curTime = millis()-startTime;
-    long testTime = timeLong *60*1000;
-    while(testTime > curTime)
-    {
-     curTime = millis()-startTime;
-    }
-    return;
- }
-
 
 
 void customTestSetup()
@@ -302,3 +267,19 @@ else
 return false;
 }
 }
+
+void moveDown()
+{
+
+return;
+}
+
+void moveUp()
+{
+
+return;
+}
+
+
+
+//End of File

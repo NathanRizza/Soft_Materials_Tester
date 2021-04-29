@@ -10,6 +10,7 @@
 
 void getData(SerialPort dataArduino, std::string fileName, int velPulse, int accPulse); // For tensile ect...
 void getDataNoDistance(SerialPort dataArduino, std::string fileName);
+void getDataStressRelax(SerialPort dataArduino, std::string fileName, int velPulse, int accPulse, int disPulse);
 void getCreepTestData(SerialPort controlArduino, std::string fileName);
 std::string getValidFileName();
 void flushArduinos(SerialPort dataArduino, SerialPort controlArduino);

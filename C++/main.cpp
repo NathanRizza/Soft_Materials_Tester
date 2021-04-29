@@ -6,7 +6,7 @@
 //filesystem
 //stream
 //string
-//All personally written header Files
+
 
 
 char commport1[] = "\\\\.\\COM3"; //commport1 is the controlArduino which drives the motors.

@@ -31,8 +31,6 @@ String serialData ="temp";
       Serial.begin(256000); // Use for connection to PC
       //Serial.begin(9600); //For testing in serial monitor.
       pinMode(10, INPUT);//Recives signals from control arduino
-      pinMode(9, INPUT);//Recives signals from control arduino for Creep Test Start
-      pinMode(8, OUTPUT);//Send signals to control arduino for Creep Test
       ads1115.begin();
     }
      
@@ -48,10 +46,6 @@ String serialData ="temp";
         }
         Serial.print('d');
         delay(5000);
-      }
-      if(digitalRead(9)==HIGH)
-      {
-        creepTest();  
       }
       changeSampleSpeed();
     }

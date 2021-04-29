@@ -338,12 +338,13 @@ void checkAll(int& pulsePerSec, int& distance, int& acc)
 
 int cmToPulse(float cm)
 {
-	return (cm * 1600 * (4));
+	float temp = (cm * 1600 * 2.5);
+	return temp;
 }
 
 float pulseToCM(int pulse)
 {
 	float temp = pulse;
-	return ((truncf(((temp / 4) / 1600) * 100)) / 100);
+	return ((truncf(((temp / 2.5) / 1600) * 100)) / 100);
 }
 

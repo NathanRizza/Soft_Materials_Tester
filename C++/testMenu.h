@@ -13,7 +13,7 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino);
 void compressionTest();
 void adhesionTest();
 void creepTest(SerialPort controlArduino, SerialPort dataArduino);
-void StressRelaxationTest();
+void StressRelaxationTest(SerialPort controlArduino, SerialPort dataArduino);
 void runCustomTest(SerialPort controlArduino, SerialPort dataArduino);
 bool abandonTest();
 void showMaxSettings();
