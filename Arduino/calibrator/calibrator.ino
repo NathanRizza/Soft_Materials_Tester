@@ -1,6 +1,6 @@
 
 // Creator: Nathan Rizza
-//Created: 3/18/2021
+//Created: 2/4/2021
 //Data arduino is COM4
 
 #include <Wire.h>
@@ -20,9 +20,9 @@ int16_t zero;
   // ads1115.setGain(GAIN_TWOTHIRDS);  // 2/3x gain +/- 6.144V  1 bit = 3mV      0.1875mV (default)
   // ads1115.setGain(GAIN_ONE);        // 1x gain   +/- 4.096V  1 bit = 2mV      0.125mV
   // ads1115.setGain(GAIN_TWO);        // 2x gain   +/- 2.048V  1 bit = 1mV      0.0625mV
-  ads1115.setGain(GAIN_FOUR);       // 4x gain   +/- 1.024V  1 bit = 0.5mV    0.03125mV
+  //ads1115.setGain(GAIN_FOUR);       // 4x gain   +/- 1.024V  1 bit = 0.5mV    0.03125mV
   //ads1115.setGain(GAIN_EIGHT);      // 8x gain   +/- 0.512V  1 bit = 0.25mV   0.015625mV
-  //ads1115.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.125mV  0.0078125mV
+  ads1115.setGain(GAIN_SIXTEEN);    // 16x gain  +/- 0.256V  1 bit = 0.125mV  0.0078125mV
 
       Serial.begin(9600);
       pinMode(10, INPUT);//Recives signals from control arduino
@@ -39,12 +39,12 @@ int16_t zero;
     
       void loop(void)
     {
-      String data=""; 
-      if (Serial.available() > 0) 
-      {
-        calibrate();
-        data = Serial.read();
-      }
+      
+     if (Serial.available() > 0) 
+     {
+     calibrate();
+     flushRead();
+     } 
     }
 
     void calibrate()
@@ -53,11 +53,20 @@ int16_t zero;
      for(int i =0;i<10;i++)
      {
       Serial.print(i);
-      sum = sum+ (ads1115.readADC_Differential_0_1()-zero); ;
+      sum = sum+ (ads1115.readADC_Differential_0_1()-zero); //results = ads1115.SINGLE_0(); // channel 0 to GND
       delay(1000);
      }
      Serial.println();
      Serial.print("Average bits: ");
      Serial.println(sum/10);
     }
-      
+
+void flushRead()
+{
+  char temp;
+  while(Serial.available()>0)
+  {
+    temp = Serial.read();
+  }
+  return;
+}
