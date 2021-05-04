@@ -43,11 +43,13 @@ void loop()
   }
   if(digitalRead(7)==HIGH)
   {
-    moveUp();  
+    moveUp();
+    stepper.setCurrentPosition();
   }
   if(digitalRead(6)==HIGH)
   {
-    moveDown();  
+    moveDown();
+    stepper.setCurrentPosition();
   }
 }
 
@@ -270,13 +272,15 @@ return false;
 
 void moveDown()
 {
-
+stepper.move(-10);
+stepper.run();
 return;
 }
 
 void moveUp()
 {
-
+stepper.move(10);
+stepper.run();
 return;
 }
 
