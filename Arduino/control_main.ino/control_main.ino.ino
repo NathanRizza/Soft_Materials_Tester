@@ -44,12 +44,12 @@ void loop()
   if(digitalRead(7)==HIGH)
   {
     moveUp();
-    stepper.setCurrentPosition();
+    stepper.setCurrentPosition(0);
   }
   if(digitalRead(6)==HIGH)
   {
     moveDown();
-    stepper.setCurrentPosition();
+    stepper.setCurrentPosition(0);
   }
 }
 
@@ -272,15 +272,26 @@ return false;
 
 void moveDown()
 {
-stepper.move(-10);
-stepper.run();
-return;
+  int i = 1;
+while(digitalRead(6)==HIGH)
+{
+  i++;
+  stepper.move(i);
+  stepper.run();
+}
+
 }
 
 void moveUp()
 {
-stepper.move(10);
-stepper.run();
+
+int i = -1;
+while(digitalRead(7)==HIGH)
+{
+  i--;
+  stepper.move(i);
+  stepper.run();
+}
 return;
 }
 
