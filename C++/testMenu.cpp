@@ -5,19 +5,19 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 {
 	while (true)
 	{
-		std::cout << "\033[2J\033[1;1H";
+		ClearScreen();
 		std::cout << "What test would you like to run?" << std::endl;
 		std::cout << "(1): Tensile Test" << std::endl;
 		std::cout << "(2): Compression Test" << std::endl;
 		std::cout << "(3): Adhesion Test" << std::endl;
-		std::cout << "(4): Creep Test" << std::endl;
-		std::cout << "(5): Stress Relaxation Test" << std::endl;
-		std::cout << "(6): Run Custom Test" << std::endl;
+		//std::cout << "(4): Creep Test" << std::endl;
+		//std::cout << "(5): Stress Relaxation Test" << std::endl;
+		//std::cout << "(6): Run Custom Test" << std::endl;
 		std::cout << "(0): Back to Main Menu" << std::endl;
 
 		std::string userInput = "9";
 		std::cin >> userInput;
-		std::cout << "\033[2J\033[1;1H";
+		ClearScreen();
 
 		if (userInput == "0")
 		{
@@ -65,8 +65,9 @@ void TestLibrary(SerialPort controlArduino, SerialPort dataArduino)
 		}
 
 		flushArduinos(dataArduino, controlArduino);
+		std::cout << "Test Complete..." << std::endl;
 		system("pause");
-		std::cout << "\033[2J\033[1;1H";
+		ClearScreen();
 	}
 }
 
@@ -85,7 +86,7 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 	std::string temp = "";
 	std::string fileName = "";
 
-		std::cout << "Displacement of Tester? (cm) (\"+\"= Up,\"-\"=Down)" << std::endl;
+		std::cout << "Displacement of Tester? (cm) (Add \"-\" to move down)" << std::endl;
 		std::cin >> distanceCM;
 		disPulse = cmToPulse(distanceCM);
 
@@ -112,16 +113,17 @@ void tensileTest(SerialPort controlArduino, SerialPort dataArduino)
 		accString = std::to_string(accPulse);
 
 		std::cout << "-----------------Test to Run-----------------" << std::endl;
+		std::cout << "Distance(CM): " << distanceCM << std::endl;
+		std::cout << "Velocity(CM/sec): " << velocityCM << std::endl;
 		std::cout << "Distance(Pulses): "<< disString << std::endl;
 		std::cout << "Velocity(Pulses/sec): "<< velString << std::endl;
-		//std::cout << "Acceleration(Pulses/sec^2): "<< accString << std::endl;
 		std::cout << "---------------------------------------------" << std::endl;
 
 		if (abandonTest())
 		{
 			return;
 		}
-		std::cout << "\033[2J\033[1;1H";
+		ClearScreen();
 
 	fileName = getValidFileName();
 	std::cout << "Sending test to arduino, please wait..."<< std::endl;
@@ -155,7 +157,7 @@ void creepTest(SerialPort controlArduino, SerialPort dataArduino)
 	
 	while (forceN > 95) 
 	{
-		std::cout << "\033[2J\033[1;1H";
+		ClearScreen();
 		std::cout << "Max force cannot be greater than 95N, please enter a smaller value." << std::endl;
 		std::cin >> forceN;
 	}
@@ -170,7 +172,7 @@ void creepTest(SerialPort controlArduino, SerialPort dataArduino)
 	{
 		return;
 	}
-	std::cout << "\033[2J\033[1;1H";
+	ClearScreen();
 
 	fileName = getValidFileName();
 	std::cout << "Sending test to arduino, please wait..." << std::endl;
@@ -251,7 +253,7 @@ void StressRelaxationTest(SerialPort controlArduino, SerialPort dataArduino)
 	{
 		return;
 	}
-	std::cout << "\033[2J\033[1;1H";
+	ClearScreen();
 
 	fileName = getValidFileName();
 	std::cout << "Sending test to arduino, please wait..." << std::endl;
@@ -285,7 +287,7 @@ void runCustomTest(SerialPort controlArduino, SerialPort dataArduino)
 		{
 			return;
 		}
-		std::cout << "\033[2J\033[1;1H";
+		ClearScreen();
 		if (doesFileExist(filename + ".txt")) 
 		{
 			waitForName = false;
@@ -330,7 +332,7 @@ bool abandonTest()
 		std::cout << "(1): Perform Test" << std::endl;
 		std::cout << "(0): Exit without Performing Test" << std::endl;
 		std::cin >> confirmedString;
-		std::cout << "\033[2J\033[1;1H";
+		ClearScreen();
 		if (confirmedString == "1")//Run
 		{
 			return false;
@@ -342,7 +344,7 @@ bool abandonTest()
 		}
 		else
 		{
-			std::cout << "\033[2J\033[1;1H";
+			ClearScreen();
 			std::cout << "Invalid input try again." << std::endl;
 			system("pause");
 		}
@@ -355,7 +357,7 @@ void showMaxSettings()
 	std::cout << "------------Tester's Max Settings------------"<< std::endl;
 	std::cout << "Max Distance:		" << pulseToCM(getMaxDistance()) << " cm" << std::endl;
 	std::cout << "Max Speed:		" << pulseToCM(getMaxSpeed()) << " cm/sec" << std::endl;
-	std::cout << "Max Acceleration:	" << pulseToCM(getMaxAcceleration()) << " cm/sec^2" << std::endl;
+	//std::cout << "Max Acceleration:	" << pulseToCM(getMaxAcceleration()) << " cm/sec^2" << std::endl;
 	std::cout << "---------------------------------------------" << std::endl;
 	std::cout << std::endl;
 }

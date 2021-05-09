@@ -1,4 +1,4 @@
-//Nathan Rizza
+//Programmer: Nathan Rizza
 
 #include "userMenu.h"
 //userMenu has the following dependancies:
@@ -21,7 +21,8 @@ int main()
 	SerialPort dataArduino(port2);
 	readSettingsFromFile(dataArduino);
 	Sleep(1000);
-	if (isConnectedMenu(controlArduino)) 
+	if (isConnectedMenu(controlArduino) && isConnectedMenu(dataArduino)) 
+	//if(true)
 	{
 		mainMenu(controlArduino,dataArduino);
 	}

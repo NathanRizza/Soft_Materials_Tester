@@ -1,6 +1,7 @@
 //Nathan Rizza
 #pragma once
 #include "customTests.h"
+#include <windows.h>
 #include <string>
 
 #ifndef TESTERSETTINGS_H
@@ -22,5 +23,7 @@ void readSettingsFromFile(SerialPort dataArduino);
 void writeSettingsToFile();
 void setdefaultSettings(SerialPort dataArduino);
 void showSettings();
+
+void ClearScreen();
 
 #endif //TESTERSETTINGS_H
