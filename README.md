@@ -1,2 +1,2 @@
 # Soft_Materials_Tester
-Arduino based soft material tester that accpets commands from a windows PC.
+Code written for a custom soft materials tester which is ran using two arduinos and can communicate with a windows PC.
