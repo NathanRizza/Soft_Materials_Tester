@@ -1,4 +1,3 @@
-//Nathan Rizza
 #include "SerialPort.h"
 
 SerialPort::SerialPort(char *portName)
